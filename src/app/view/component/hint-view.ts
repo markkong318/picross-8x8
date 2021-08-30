@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 import {View} from '../../../framework/view';
 import {Size} from '../../../framework/size';
 
-export class BlockView extends View {
+export class HintView extends View {
   private _graphics: PIXI.Graphics;
 
   public size = new Size(32, 32);

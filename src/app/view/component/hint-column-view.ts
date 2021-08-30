@@ -2,12 +2,12 @@ import * as PIXI from 'pixi.js';
 
 import {View} from '../../../framework/view';
 import {Size} from '../../../framework/size';
-import {BlockView} from "./block-view";
+import {HintView} from "./hint-view";
 import {Point} from "pixi.js";
 
-export class BlockColumnView extends View {
+export class HintColumnView extends View {
   private _graphics: PIXI.Graphics;
-  private _blockViews: BlockView[];
+  private _hintViews: HintView[];
 
   public size = new Size(32, 100);
   private text: PIXI.Text;
@@ -17,7 +17,7 @@ export class BlockColumnView extends View {
   }
 
   public init() {
-    this._blockViews = [];
+    this._hintViews = [];
 
     this._graphics = new PIXI.Graphics();
     this._graphics.beginFill(0xcccccc);
@@ -26,13 +26,13 @@ export class BlockColumnView extends View {
     this.addChild(this._graphics);
 
     for (let i = 0; i < 3; i++) {
-      const blockView = new BlockView();
-      blockView.init();
-      blockView.setText(i);
-      blockView.position = new Point(0, this.size.height - blockView.size.height * (i + 1));
-      this.addChild(blockView);
+      const hintView = new HintView();
+      hintView.init();
+      hintView.setText(i);
+      hintView.position = new Point(0, this.size.height - hintView.size.height * (i + 1));
+      this.addChild(hintView);
 
-      this._blockViews.push(blockView);
+      this._hintViews.push(hintView);
     }
 
   }

@@ -26,6 +26,7 @@ font.load()
       height: window.innerHeight,
       resizeTo: window,
       antialias: true,
+      resolution: 1,
     });
     document.body.appendChild(app.view);
 

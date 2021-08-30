@@ -7,7 +7,7 @@ import {GroundView} from "./component/ground-view";
 import {Point} from "pixi.js";
 import {TouchView} from "./component/touch-view";
 import {InfoView} from "./component/info-view";
-import {TileView} from "./component/tile-view";
+import {PuzzleView} from "./component/puzzle-view";
 import {BoardView} from "./component/board-view";
 
 export class GameView extends View {

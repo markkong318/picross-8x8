@@ -3,8 +3,10 @@ import * as PIXI from 'pixi.js';
 import {View} from '../../../framework/view';
 import {Size} from '../../../framework/size';
 
-export class TileView extends View {
+export class PuzzleView extends View {
   private _graphics: PIXI.Graphics;
+  private _x: number;
+  private _y: number;
 
   public size = new Size(32, 32);
 
@@ -28,10 +30,10 @@ export class TileView extends View {
 
     this.interactive = true;
 
-    this.on('pointertap', this.pointerTap);
+    this.on('pointertap', this.select);
   }
 
-  pointerTap() {
+  select() {
     console.log('pointer tap');
   }
 }

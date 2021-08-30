@@ -1,6 +1,7 @@
 
-export const PUZZLE_EMPTY = 0;
-
+export const PUZZLE_UNKNOWN = 0;
+export const PUZZLE_FILLED = 1;
+export const PUZZLE_BLANK = 2;
 /////
 export const PLAYER1_ID = '1';
 export const PLAYER2_ID = '2';
