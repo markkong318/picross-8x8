@@ -55,14 +55,29 @@ export class GameApplication extends Application {
 
   public resizeView(): void {
     if (this.renderer.width > this.renderer.height) {
-      const scale = Math.min(this.renderer.width / this._gameView.size.width, this.renderer.height / this._gameView.size.height);
+      const scale = Math.min(this.renderer.width / this._gameView.size.width, this.renderer.height / this._gameView.size.height) / this.renderer.resolution;
+
+      console.log("this.renderer.width: " + this.renderer.width);
+      console.log("this._gameView.size: " + this._gameView.size.width);
+
+      console.log("this.renderer.height: " + this.renderer.height);
+      console.log("this._gameView.height: " + this._gameView.size.height);
+
+      console.log("scale: " + scale);
+
+      console.log("this._gameView.scale.x: " + this._gameView.scale.x);
 
       this._gameView.scale.x = scale;
       this._gameView.scale.y = scale;
 
-      this._gameView.x = (this.renderer.width - this._gameView.size.width * scale) / 2;
-      this._gameView.y = (this.renderer.height - this._gameView.size.height * scale) / 2;
+      console.log("this._gameView.scale.x: " + this._gameView.scale.x);
+
+      console.log("this._gameView.size*: " + this._gameView.size.width);
+
+      this._gameView.x = (this.renderer.width - this._gameView.size.width * scale * this.renderer.resolution) / 2 / this.renderer.resolution;
+      this._gameView.y = (this.renderer.height - this._gameView.size.height * scale * this.renderer.resolution) / 2 / this.renderer.resolution;
     } else {
+      console.log("hello");
       this._gameView.width = this.renderer.width;
       this._gameView.height = this.renderer.height;
     }

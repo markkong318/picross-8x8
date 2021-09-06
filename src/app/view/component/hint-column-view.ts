@@ -9,7 +9,9 @@ export class HintColumnView extends View {
   private _graphics: PIXI.Graphics;
   private _hintViews: HintView[];
 
-  public size = new Size(32, 100);
+  public size = new Size(32, 150);
+  private radius: number = 10;
+
   private text: PIXI.Text;
 
   constructor() {
@@ -20,20 +22,34 @@ export class HintColumnView extends View {
     this._hintViews = [];
 
     this._graphics = new PIXI.Graphics();
-    this._graphics.beginFill(0xcccccc);
-    this._graphics.drawRect(0, 0, this.size.width, this.size.height);
-
     this.addChild(this._graphics);
 
     for (let i = 0; i < 3; i++) {
       const hintView = new HintView();
       hintView.init();
       hintView.setText(i);
-      hintView.position = new Point(0, this.size.height - hintView.size.height * (i + 1));
+      hintView.position = new Point(
+        (this.size.width - hintView.size.width) / 2,
+        this.size.height - hintView.size.height * (i + 1)
+      );
       this.addChild(hintView);
 
       this._hintViews.push(hintView);
     }
+  }
 
+  drawOdd() {
+    this._graphics.beginFill(0xffffff);
+    this._graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
+  }
+
+  drawEven() {
+    this._graphics.beginFill(0xf1f2f3);
+    this._graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
+  }
+
+  drawSelect() {
+    this._graphics.beginFill(0x45d4ff);
+    this._graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
   }
 }

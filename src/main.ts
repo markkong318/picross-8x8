@@ -11,8 +11,9 @@ declare global {
   }
 }
 
-var font = new FontFaceObserver('pong-score')
+var font = new FontFaceObserver('lato-light')
 font.load()
+  .then(() => (new FontFaceObserver('lato')).load())
   .then(() => {
     window.PIXI = PIXI;
 
@@ -26,12 +27,14 @@ font.load()
       height: window.innerHeight,
       resizeTo: window,
       antialias: true,
-      resolution: 1,
+      resolution: 2,
+      // autoDensity: true,
+      autoResize: true
     });
     document.body.appendChild(app.view);
 
     window.onresize = () => {
-      app.renderer.resize(window.innerWidth, window.innerHeight);
-      app.resizeView();
+      // app.renderer.resize(window.innerWidth, window.innerHeight);
+      // app.resizeView();
     };
   });

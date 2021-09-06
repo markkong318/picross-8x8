@@ -50,7 +50,7 @@ export class GameView extends View {
     // this.addChild(tileView);
 
     const boardView = new BoardView();
-    boardView.position = new Point(100, 100);
+    boardView.position = new Point(200, 200);
     boardView.init();
     this.addChild(boardView);
   }
