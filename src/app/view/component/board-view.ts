@@ -8,28 +8,35 @@ import {Point} from "pixi.js";
 import {HintColumnView} from "./hint-column-view";
 import {HintRowView} from "./hint-row-view";
 import Bottle from '../../../framework/bottle';
+import Event from '../../../framework/event';
 import {InfoView} from "./info-view";
+import {
+  PUZZLE_BLACK, PUZZLE_WHITE, PUZZLE_X,
+  EVENT_UPDATE_PUZZLE_VIEW,
+  EVENT_UPDATE_HINT_VIEW,
+} from "../../util/env";
+import {GameModel} from "../../model/game-model";
 
 export class BoardView extends View {
-  private _graphics: PIXI.Graphics;
-  private _boardGraphics: PIXI.Graphics;
+  private graphics: PIXI.Graphics;
+  private boardGraphics: PIXI.Graphics;
 
-  private _puzzleViews;
-  private _hintRowViews = [];
-  private _hintColumnViews = [];
-  private _infoView;
+  private puzzleViews;
+  private hintRowViews = [];
+  private hintColumnViews = [];
+  private infoView;
 
-  private _gameModel;
+  private gameModel: GameModel;
 
   constructor() {
     super();
   }
 
   public init() {
-    this._gameModel = Bottle.get('gameModel');
+    this.gameModel = Bottle.get('gameModel');
 
-    this._graphics = new PIXI.Graphics();
-    this.addChild(this._graphics);
+    this.graphics = new PIXI.Graphics();
+    this.addChild(this.graphics);
 
     for (let i = 0; i < 8; i++) {
       const hintRowView = new HintRowView();
@@ -42,7 +49,7 @@ export class BoardView extends View {
 
       this.addChild(hintRowView);
 
-      this._hintRowViews.push(hintRowView);
+      this.hintRowViews.push(hintRowView);
     }
 
     for (let i = 0; i < 8; i++) {
@@ -56,51 +63,94 @@ export class BoardView extends View {
 
       this.addChild(hintColumnView);
 
-      this._hintColumnViews.push(hintColumnView);
+      this.hintColumnViews.push(hintColumnView);
     }
 
-    this._boardGraphics = new PIXI.Graphics();
-    this.addChild(this._boardGraphics);
+    this.boardGraphics = new PIXI.Graphics();
+    this.addChild(this.boardGraphics);
 
-    this._boardGraphics.beginFill(0x656566);
-    this._boardGraphics.drawRoundedRect(-1, -1, 32 * 8 + 2, 32 * 8 + 2, 5);
+    this.boardGraphics.beginFill(0x656566);
+    this.boardGraphics.drawRoundedRect(-1, -1, 32 * 8 + 2, 32 * 8 + 2, 5);
 
 
     // draw puzzle
-    this._puzzleViews = new Array(8);
+    this.puzzleViews = new Array(8);
 
-    for (let i = 0; i < this._puzzleViews.length; i++) {
-      this._puzzleViews[i] = new Array(8);
+    for (let i = 0; i < this.puzzleViews.length; i++) {
+      this.puzzleViews[i] = new Array(8);
     }
 
-    for (let i = 0; i < this._puzzleViews.length; i++) {
-      for (let j = 0; j < this._puzzleViews[i].length; j++) {
-        this._puzzleViews[i][j] = new PuzzleView();
-        this._puzzleViews[i][j].position = new Point(i * this._puzzleViews[i][j].size.width, j * this._puzzleViews[i][j].size.height);
-        this._puzzleViews[i][j].init();
-        this._puzzleViews[i][j].drawEmpty();
+    for (let i = 0; i < this.puzzleViews.length; i++) {
+      for (let j = 0; j < this.puzzleViews[i].length; j++) {
+        this.puzzleViews[i][j] = new PuzzleView(i, j);
+        this.puzzleViews[i][j].position = new Point(i * this.puzzleViews[i][j].size.width, j * this.puzzleViews[i][j].size.height);
+        this.puzzleViews[i][j].init();
+        this.puzzleViews[i][j].drawWhite();
 
-        this.addChild(this._puzzleViews[i][j]);
+        this.addChild(this.puzzleViews[i][j]);
       }
     }
 
-    const width = this._hintRowViews[0].size.width + this._puzzleViews[0][0].size.width * this._puzzleViews[0].length;
-    const height = this._hintColumnViews[0].size.height + this._puzzleViews[0][0].size.height * this._puzzleViews.length;
+    const width = this.hintRowViews[0].size.width + this.puzzleViews[0][0].size.width * this.puzzleViews[0].length;
+    const height = this.hintColumnViews[0].size.height + this.puzzleViews[0][0].size.height * this.puzzleViews.length;
 
     const padding = 5;
 
-    this._graphics.beginFill(0xffffff);
-    this._graphics.drawRoundedRect(
-      -this._hintRowViews[0].size.width - padding,
-      -this._hintColumnViews[0].size.height - padding,
+    this.graphics.beginFill(0xffffff);
+    this.graphics.drawRoundedRect(
+      -this.hintRowViews[0].size.width - padding,
+      -this.hintColumnViews[0].size.height - padding,
       width + padding * 2,
       height + padding * 2,
       8
     );
 
-    this._infoView = new InfoView();
-    this._infoView.init();
-    this._infoView.position = new Point(-150, -150);
-    this.addChild(this._infoView)
+    this.infoView = new InfoView();
+    this.infoView.init();
+    this.infoView.position = new Point(-150, -150);
+    this.addChild(this.infoView)
+
+    this.updatePuzzleViews();
+
+    Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzleViews());
+    Event.on(EVENT_UPDATE_HINT_VIEW, (x, y) => this.updateHintViews(x, y));
+  }
+
+  updatePuzzleViews() {
+    const puzzle = this.gameModel.puzzle;
+
+    for (let i = 0; i < this.puzzleViews.length; i++) {
+      for (let j = 0; j < this.puzzleViews[i].length; j++) {
+        switch (puzzle[i][j]) {
+          case PUZZLE_WHITE:
+            this.puzzleViews[i][j].drawWhite();
+            break;
+          case PUZZLE_BLACK:
+            this.puzzleViews[i][j].drawBlack();
+            break;
+          case PUZZLE_X:
+            this.puzzleViews[i][j].drawX();
+            break;
+        }
+      }
+    }
+  }
+
+  updateHintViews(x, y) {
+    for (let i = 0; i < 8; i++) {
+      const hintColumnView = this.hintColumnViews[i];
+      (i % 2) ? hintColumnView.drawOdd() : hintColumnView.drawEven();
+
+      if (i === x) {
+        hintColumnView.drawSelect();
+      }
+
+      const hintRowView = this.hintRowViews[i];
+      (i % 2) ? hintRowView.drawOdd() : hintRowView.drawEven();
+
+      if (i === y) {
+        hintRowView.drawSelect();
+      }
+    }
   }
 }

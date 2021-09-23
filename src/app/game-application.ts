@@ -6,15 +6,11 @@ import {GameController} from "./controller/game-controller";
 import {Application} from "../framework/application"
 import {Size} from "../framework/size";
 import Bottle from "../framework/bottle";
-import {Engine} from "./util/engine";
-import {Ai} from "./util/ai";
 
 export class GameApplication extends Application {
   private _gameModel: GameModel;
   private _gameController: GameController;
   private _gameView: GameView;
-  private _engine: Engine;
-  private _ai: Ai;
 
   constructor(options?) {
     super(options);
@@ -41,12 +37,6 @@ export class GameApplication extends Application {
     this._gameView = new GameView();
     this._gameView.size = new Size(480, 800);
     this._gameView.init();
-
-    this._engine = new Engine();
-    Bottle.set('engine', this._engine);
-
-    this._ai = new Ai();
-    Bottle.set('ai', this._ai);
 
     this.stage.addChild(this._gameView);
 

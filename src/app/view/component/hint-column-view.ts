@@ -6,8 +6,8 @@ import {HintView} from "./hint-view";
 import {Point} from "pixi.js";
 
 export class HintColumnView extends View {
-  private _graphics: PIXI.Graphics;
-  private _hintViews: HintView[];
+  private graphics: PIXI.Graphics;
+  private hintViews: HintView[];
 
   public size = new Size(32, 150);
   private radius: number = 10;
@@ -19,10 +19,10 @@ export class HintColumnView extends View {
   }
 
   public init() {
-    this._hintViews = [];
+    this.hintViews = [];
 
-    this._graphics = new PIXI.Graphics();
-    this.addChild(this._graphics);
+    this.graphics = new PIXI.Graphics();
+    this.addChild(this.graphics);
 
     for (let i = 0; i < 3; i++) {
       const hintView = new HintView();
@@ -34,22 +34,22 @@ export class HintColumnView extends View {
       );
       this.addChild(hintView);
 
-      this._hintViews.push(hintView);
+      this.hintViews.push(hintView);
     }
   }
 
   drawOdd() {
-    this._graphics.beginFill(0xffffff);
-    this._graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
+    this.graphics.beginFill(0xffffff);
+    this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
   }
 
   drawEven() {
-    this._graphics.beginFill(0xf1f2f3);
-    this._graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
+    this.graphics.beginFill(0xf1f2f3);
+    this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
   }
 
   drawSelect() {
-    this._graphics.beginFill(0x45d4ff);
-    this._graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
+    this.graphics.beginFill(0x45d4ff);
+    this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
   }
 }

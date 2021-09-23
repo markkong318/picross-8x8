@@ -1,25 +1,28 @@
 import {Model} from "../../framework/model";
-import {PUZZLE_UNKNOWN} from "../util/env";
+import {
+  PUZZLE_WHITE,
+} from "../util/env";
 
 export class GameModel extends Model {
-  public _puzzle: number[][];
-  public _hintRow: number[][];
-  public _hintColumn: number[][];
+  public puzzle: number[][];
+  public hintRow: number[][];
+  public hintColumn: number[][];
 
   public isStart: boolean = false;
+  public isTouched: boolean = false;
 
   constructor() {
     super();
 
-    this._puzzle = new Array(8);
-    for (let i = 0; i < this._puzzle.length; i++) {
-      this._puzzle[i] = new Array(8);
-      for (let j = 0; j < this._puzzle[i].length; j++) {
-        this._puzzle[i][j] = PUZZLE_UNKNOWN;
+    this.puzzle = new Array(8);
+    for (let i = 0; i < this.puzzle.length; i++) {
+      this.puzzle[i] = new Array(8);
+      for (let j = 0; j < this.puzzle[i].length; j++) {
+        this.puzzle[i][j] = PUZZLE_WHITE;
       }
     }
 
-    this._hintRow = new Array(8);
-    this._hintColumn = new Array(8);
+    this.hintRow = new Array(8);
+    this.hintColumn = new Array(8);
   }
 }
