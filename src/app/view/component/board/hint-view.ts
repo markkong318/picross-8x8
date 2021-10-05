@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
-import {View} from '../../../framework/view';
-import {Size} from '../../../framework/size';
+import {View} from '../../../../framework/view';
+import {Size} from '../../../../framework/size';
 
 export class HintView extends View {
   private graphics: PIXI.Graphics;

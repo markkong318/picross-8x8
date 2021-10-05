@@ -3,13 +3,13 @@ import * as PIXI from 'pixi.js';
 import {View} from "../../../framework/view";
 import {Size} from "../../../framework/size";
 
-import {PuzzleView} from "./puzzle-view";
+import {PuzzleView} from "./board/puzzle-view";
 import {Point} from "pixi.js";
-import {HintColumnView} from "./hint-column-view";
-import {HintRowView} from "./hint-row-view";
+import {HintColumnView} from "./board/hint-column-view";
+import {HintRowView} from "./board/hint-row-view";
 import Bottle from '../../../framework/bottle';
 import Event from '../../../framework/event';
-import {InfoView} from "./info-view";
+import {InfoView} from "./board/info-view";
 import {
   PUZZLE_BLACK, PUZZLE_WHITE, PUZZLE_X,
   EVENT_UPDATE_PUZZLE_VIEW,

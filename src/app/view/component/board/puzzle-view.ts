@@ -1,13 +1,13 @@
 import * as PIXI from 'pixi.js';
 
-import {View} from '../../../framework/view';
-import {Size} from '../../../framework/size';
-import Event from '../../../framework/event';
+import {View} from '../../../../framework/view';
+import {Size} from '../../../../framework/size';
+import Event from '../../../../framework/event';
 import {
   EVENT_TOUCH_PUZZLE,
-} from '../../util/env';
-import Bottle from "../../../framework/bottle";
-import {GameModel} from "../../model/game-model";
+} from '../../../util/env';
+import Bottle from "../../../../framework/bottle";
+import {GameModel} from "../../../model/game-model";
 
 export class PuzzleView extends View {
   private graphics: PIXI.Graphics;

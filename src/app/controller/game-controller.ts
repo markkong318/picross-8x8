@@ -20,7 +20,8 @@ export class GameController extends Controller {
     this.gameModel = Bottle.get('gameModel');
 
     Event.on(EVENT_TOUCH_PUZZLE, (x, y) => {
-      console.log('EVENT_TOUCH_PUZZLE ' + x + ',' + y)
+      const puzzle = this.gameModel.puzzle[x][y];
+
       if (this.gameModel.puzzle[x][y] == PUZZLE_WHITE) {
         this.gameModel.puzzle[x][y] = PUZZLE_BLACK;
       } else if (this.gameModel.puzzle[x][y] == PUZZLE_BLACK) {
@@ -30,5 +31,15 @@ export class GameController extends Controller {
       Event.emit(EVENT_UPDATE_PUZZLE_VIEW);
       Event.emit(EVENT_UPDATE_HINT_VIEW, x, y);
     });
+  }
+
+  initHint() {
+    const answer = this.gameModel.answer;
+
+    for (let i = 0; i < answer.length; i++) {
+      for (let j = 0; j < answer[i].length; j++) {
+        answer[i][j] = PUZZLE_WHITE;
+      }
+    }
   }
 }
