@@ -7,8 +7,8 @@ import {
 export class GameModel extends Model {
   public puzzle: number[][];
   public answer: number[][];
-  public hintRow: number[][];
-  public hintColumn: number[][];
+  public hintRows: number[][];
+  public hintColumns: number[][];
 
   public isStart: boolean = false;
   public isTouched: boolean = false;
@@ -20,9 +20,11 @@ export class GameModel extends Model {
     for (let i = 0; i < this.answer.length; i++) {
       this.answer[i] = new Array(8);
       for (let j = 0; j < this.answer[i].length; j++) {
-        this.answer[i][j] = PUZZLE_BLACK;
+        this.answer[i][j] = PUZZLE_WHITE;
       }
     }
+
+    this.answer[7][0] = PUZZLE_BLACK;
 
     this.puzzle = new Array(8);
     for (let i = 0; i < this.puzzle.length; i++) {
@@ -32,7 +34,14 @@ export class GameModel extends Model {
       }
     }
 
-    this.hintRow = new Array(8);
-    this.hintColumn = new Array(8);
+    this.hintRows = new Array(8);
+    for (let i = 0; i < this.hintRows.length; i++) {
+      this.hintRows[i] = [];
+    }
+
+    this.hintColumns = new Array(8);
+    for (let i = 0; i < this.hintColumns.length; i++) {
+      this.hintColumns[i] = [];
+    }
   }
 }

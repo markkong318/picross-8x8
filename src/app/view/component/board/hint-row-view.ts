@@ -17,24 +17,23 @@ export class HintRowView extends View {
   }
 
   public init() {
-    this.hintViews = [];
+    // this.hintViews = [];
 
     this.graphics = new PIXI.Graphics();
-
     this.addChild(this.graphics);
 
-    for (let i = 0; i < 3; i++) {
-      const hintView = new HintView();
-      hintView.init();
-      hintView.setText(i);
-      hintView.position = new Point(
-        this.size.width - hintView.size.width * (i + 1),
-        (this.size.height - hintView.size.height) / 2,
-      );
-      this.addChild(hintView);
-
-      this.hintViews.push(hintView);
-    }
+    // for (let i = 0; i < 3; i++) {
+    //   const hintView = new HintView();
+    //   hintView.init();
+    //   hintView.setText(i);
+    //   hintView.position = new Point(
+    //     this.size.width - hintView.size.width * (i + 1),
+    //     (this.size.height - hintView.size.height) / 2,
+    //   );
+    //   this.addChild(hintView);
+    //
+    //   this.hintViews.push(hintView);
+    // }
   }
 
   drawOdd() {
@@ -50,5 +49,22 @@ export class HintRowView extends View {
   drawSelect() {
     this.graphics.beginFill(0x45d4ff);
     this.graphics.drawRoundedRect(0, 0, this.size.width + this.radius, this.size.height, this.radius);
+  }
+
+  drawHints(hits: number[]) {
+    this.hintViews = [];
+
+    for (let i = 0; i < hits.length; i++) {
+      const hintView = new HintView();
+      hintView.init();
+      hintView.setText(hits[i]);
+      hintView.position = new Point(
+        this.size.width - hintView.size.width * (i + 1),
+        (this.size.height - hintView.size.height) / 2,
+      );
+      this.addChild(hintView);
+
+      this.hintViews.push(hintView);
+    }
   }
 }

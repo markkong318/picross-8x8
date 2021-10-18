@@ -12,9 +12,11 @@ import Event from '../../../framework/event';
 import {InfoView} from "./board/info-view";
 import {
   PUZZLE_BLACK, PUZZLE_WHITE, PUZZLE_X,
+} from "../../util/env";
+import {
   EVENT_UPDATE_PUZZLE_VIEW,
   EVENT_UPDATE_HINT_VIEW,
-} from "../../util/env";
+} from "../../env/event";
 import {GameModel} from "../../model/game-model";
 
 export class BoardView extends View {
@@ -45,7 +47,7 @@ export class BoardView extends View {
 
       (i % 2) ? hintRowView.drawOdd() : hintRowView.drawEven();
 
-      if (i === 7) hintRowView.drawSelect();
+      hintRowView.drawHints(this.gameModel.hintRows[i]);
 
       this.addChild(hintRowView);
 
@@ -59,7 +61,7 @@ export class BoardView extends View {
 
       (i % 2) ? hintColumnView.drawOdd() : hintColumnView.drawEven();
 
-      if (i === 7) hintColumnView.drawSelect();
+      hintColumnView.drawHints(this.gameModel.hintColumns[i]);
 
       this.addChild(hintColumnView);
 

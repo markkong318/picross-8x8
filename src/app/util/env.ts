@@ -23,7 +23,5 @@ export const EVENT_RENDER_SCORE = 'event_render_score';
 export const EVENT_RENDER_GAME_OVER = 'event_render_game_over';
 
 
-export const EVENT_UPDATE_PUZZLE_VIEW = 'EVENT_UPDATE_PUZZLE_VIEW';
-export const EVENT_UPDATE_HINT_VIEW = 'EVENT_UPDATE_HINT_VIEW'
-export const EVENT_TOUCH_PUZZLE = 'EVENT_TOUCH_PUZZLE';
+
 

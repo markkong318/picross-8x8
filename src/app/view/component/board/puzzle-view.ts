@@ -5,7 +5,7 @@ import {Size} from '../../../../framework/size';
 import Event from '../../../../framework/event';
 import {
   EVENT_TOUCH_PUZZLE,
-} from '../../../util/env';
+} from '../../../env/event';
 import Bottle from "../../../../framework/bottle";
 import {GameModel} from "../../../model/game-model";
 
