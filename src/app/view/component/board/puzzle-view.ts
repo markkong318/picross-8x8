@@ -47,6 +47,7 @@ export class PuzzleView extends View {
     this.on('pointerup', () => {
       this.gameModel.isTouched = false;
     });
+
     this.on('pointerover', () => {
       if (!this.gameModel.isTouched) return;
       this.touch();
@@ -67,22 +68,23 @@ export class PuzzleView extends View {
     this.graphics.beginFill(0xffffff);
     this.graphics.drawRoundedRect(1, 1, this.size.width - 2, this.size.height - 2, 5);
 
-    const lineStyle= {
+    const style= {
       width: 4,
       color: 0xf68310,
       cap: 'round',
     };
 
     // @ts-ignore
-    this.graphics.lineStyle(lineStyle)
+    this.graphics.lineStyle(style)
       .moveTo(this.size.width / 2 - this.size.width / 5.5, this.size.height / 2 - this.size.height / 5.5)
       .lineTo(this.size.width / 2 + this.size.width / 5.5, this.size.height / 2 + this.size.height / 5.5);
 
     // @ts-ignore
-    this.graphics.lineStyle(lineStyle)
+    this.graphics.lineStyle(style)
       .moveTo(this.size.width / 2 + this.size.width / 5.5, this.size.height / 2 - this.size.height / 5.5)
       .lineTo(this.size.width / 2 - this.size.width / 5.5, this.size.height / 2 + this.size.height / 5.5);
 
+    this.graphics.lineStyle();
   }
 
   touch() {

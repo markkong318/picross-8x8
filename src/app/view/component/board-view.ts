@@ -11,8 +11,8 @@ import Bottle from '../../../framework/bottle';
 import Event from '../../../framework/event';
 import {InfoView} from "./board/info-view";
 import {
-  PUZZLE_BLACK, PUZZLE_WHITE, PUZZLE_X,
-} from "../../util/env";
+  BLOCK_BLACK, BLOCK_WHITE, BLOCK_X,
+} from "../../env/block";
 import {
   EVENT_UPDATE_PUZZLE_VIEW,
   EVENT_UPDATE_HINT_VIEW,
@@ -40,6 +40,56 @@ export class BoardView extends View {
     this.graphics = new PIXI.Graphics();
     this.addChild(this.graphics);
 
+    this.initHintViews();
+
+    this.boardGraphics = new PIXI.Graphics();
+    this.addChild(this.boardGraphics);
+
+    this.boardGraphics.beginFill(0x656566);
+    this.boardGraphics.drawRoundedRect(-1, -1, 32 * 8 + 2, 32 * 8 + 2, 5);
+
+
+    // draw puzzle
+    this.puzzleViews = new Array(8);
+
+    for (let i = 0; i < this.puzzleViews.length; i++) {
+      this.puzzleViews[i] = new Array(8);
+    }
+
+    for (let i = 0; i < this.puzzleViews.length; i++) {
+      for (let j = 0; j < this.puzzleViews[i].length; j++) {
+        this.puzzleViews[i][j] = new PuzzleView(i, j);
+        this.puzzleViews[i][j].position = new Point(j * this.puzzleViews[i][j].size.height, i * this.puzzleViews[i][j].size.width);
+        this.puzzleViews[i][j].init();
+        this.puzzleViews[i][j].drawWhite();
+
+        this.addChild(this.puzzleViews[i][j]);
+      }
+    }
+
+    const width = this.hintRowViews[0].size.width + this.puzzleViews[0][0].size.width * this.puzzleViews[0].length;
+    const height = this.hintColumnViews[0].size.height + this.puzzleViews[0][0].size.height * this.puzzleViews.length;
+
+    const padding = 5;
+
+    this.graphics.beginFill(0xffffff);
+    this.graphics.drawRoundedRect(
+      -this.hintRowViews[0].size.width - padding,
+      -this.hintColumnViews[0].size.height - padding,
+      width + padding * 2,
+      height + padding * 2,
+      8
+    );
+
+    this.initInfoView();
+
+    this.updatePuzzleViews();
+
+    Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzleViews());
+    Event.on(EVENT_UPDATE_HINT_VIEW, (x, y) => this.updateHintViews(x, y));
+  }
+
+  initHintViews() {
     for (let i = 0; i < 8; i++) {
       const hintRowView = new HintRowView();
       hintRowView.position = new Point(-hintRowView.size.width, i * 32);
@@ -67,55 +117,17 @@ export class BoardView extends View {
 
       this.hintColumnViews.push(hintColumnView);
     }
+  }
 
-    this.boardGraphics = new PIXI.Graphics();
-    this.addChild(this.boardGraphics);
-
-    this.boardGraphics.beginFill(0x656566);
-    this.boardGraphics.drawRoundedRect(-1, -1, 32 * 8 + 2, 32 * 8 + 2, 5);
-
-
-    // draw puzzle
-    this.puzzleViews = new Array(8);
-
-    for (let i = 0; i < this.puzzleViews.length; i++) {
-      this.puzzleViews[i] = new Array(8);
-    }
-
-    for (let i = 0; i < this.puzzleViews.length; i++) {
-      for (let j = 0; j < this.puzzleViews[i].length; j++) {
-        this.puzzleViews[i][j] = new PuzzleView(i, j);
-        this.puzzleViews[i][j].position = new Point(i * this.puzzleViews[i][j].size.width, j * this.puzzleViews[i][j].size.height);
-        this.puzzleViews[i][j].init();
-        this.puzzleViews[i][j].drawWhite();
-
-        this.addChild(this.puzzleViews[i][j]);
-      }
-    }
-
-    const width = this.hintRowViews[0].size.width + this.puzzleViews[0][0].size.width * this.puzzleViews[0].length;
-    const height = this.hintColumnViews[0].size.height + this.puzzleViews[0][0].size.height * this.puzzleViews.length;
-
-    const padding = 5;
-
-    this.graphics.beginFill(0xffffff);
-    this.graphics.drawRoundedRect(
-      -this.hintRowViews[0].size.width - padding,
-      -this.hintColumnViews[0].size.height - padding,
-      width + padding * 2,
-      height + padding * 2,
-      8
-    );
-
+  initInfoView() {
     this.infoView = new InfoView();
     this.infoView.init();
     this.infoView.position = new Point(-150, -150);
     this.addChild(this.infoView)
+  }
 
-    this.updatePuzzleViews();
+  initBackground() {
 
-    Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzleViews());
-    Event.on(EVENT_UPDATE_HINT_VIEW, (x, y) => this.updateHintViews(x, y));
   }
 
   updatePuzzleViews() {
@@ -124,13 +136,13 @@ export class BoardView extends View {
     for (let i = 0; i < this.puzzleViews.length; i++) {
       for (let j = 0; j < this.puzzleViews[i].length; j++) {
         switch (puzzle[i][j]) {
-          case PUZZLE_WHITE:
+          case BLOCK_WHITE:
             this.puzzleViews[i][j].drawWhite();
             break;
-          case PUZZLE_BLACK:
+          case BLOCK_BLACK:
             this.puzzleViews[i][j].drawBlack();
             break;
-          case PUZZLE_X:
+          case BLOCK_X:
             this.puzzleViews[i][j].drawX();
             break;
         }
@@ -143,14 +155,14 @@ export class BoardView extends View {
       const hintColumnView = this.hintColumnViews[i];
       (i % 2) ? hintColumnView.drawOdd() : hintColumnView.drawEven();
 
-      if (i === x) {
+      if (i === y) {
         hintColumnView.drawSelect();
       }
 
       const hintRowView = this.hintRowViews[i];
       (i % 2) ? hintRowView.drawOdd() : hintRowView.drawEven();
 
-      if (i === y) {
+      if (i === x) {
         hintRowView.drawSelect();
       }
     }

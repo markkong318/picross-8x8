@@ -1,8 +1,4 @@
 
-export const PUZZLE_WHITE = 0;
-export const PUZZLE_BLACK = 1;
-export const PUZZLE_X = 2;
-/////
 export const PLAYER1_ID = '1';
 export const PLAYER2_ID = '2';
 
