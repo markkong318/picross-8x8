@@ -24,6 +24,7 @@ export class HintView extends View {
       fontFamily: 'lato',
       fill: ['#a6a6a6'],
       fontSize: 25,
+      fontWeight: 'bold',
     });
     this.text.anchor.x = 0.5;
     this.text.anchor.y = 0.5;

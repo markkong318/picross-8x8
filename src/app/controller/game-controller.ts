@@ -21,21 +21,16 @@ export class GameController extends Controller {
     this.gameModel = Bottle.get('gameModel');
 
     Event.on(EVENT_TOUCH_PUZZLE, (x, y) => {
-      let puzzle = this.gameModel.puzzle[x][y];
-
-      if (puzzle == BLOCK_WHITE || puzzle == BLOCK_X) {
-        puzzle = BLOCK_BLACK;
-      } else if (puzzle == BLOCK_BLACK) {
-        puzzle = BLOCK_WHITE;
-      }
-
-      this.gameModel.puzzle[x][y] = puzzle;
-
+      this.togglePuzzle(x, y);
       this.clearXPuzzle();
       this.updateXPuzzle();
 
       Event.emit(EVENT_UPDATE_PUZZLE_VIEW);
       Event.emit(EVENT_UPDATE_HINT_VIEW, x, y);
+
+      if (this.isCompleted()) {
+        console.log('completed')
+      }
     });
 
     this.initHintColumns();
@@ -89,6 +84,46 @@ export class GameController extends Controller {
         hintColumns[i].push(count);
       }
     }
+  }
+
+  isCompleted() {
+    const puzzle = this.gameModel.puzzle;
+    const answer = this.gameModel.answer;
+
+    let ret = true;
+
+    for (let i = 0; i < puzzle.length; i++) {
+      for (let j = 0; j < puzzle[i].length; j++) {
+        if (puzzle[i][j] === BLOCK_WHITE) {
+          ret = false;
+          break;
+        }
+
+        if (puzzle[i][j] === BLOCK_BLACK && answer[i][j] !== BLOCK_BLACK) {
+          ret = false;
+          break;
+        }
+
+        if (puzzle[i][j] === BLOCK_X && answer[i][j] !== BLOCK_WHITE) {
+          ret = false;
+          break;
+        }
+      }
+    }
+
+    return ret;
+  }
+
+  togglePuzzle(x, y) {
+    let puzzle = this.gameModel.puzzle[x][y];
+
+    if (puzzle == BLOCK_WHITE || puzzle == BLOCK_X) {
+      puzzle = BLOCK_BLACK;
+    } else if (puzzle == BLOCK_BLACK) {
+      puzzle = BLOCK_WHITE;
+    }
+
+    this.gameModel.puzzle[x][y] = puzzle;
   }
 
   clearXPuzzle() {

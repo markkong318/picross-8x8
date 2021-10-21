@@ -19,23 +19,8 @@ export class HintColumnView extends View {
   }
 
   public init() {
-    // this.hintViews = [];
-
     this.graphics = new PIXI.Graphics();
     this.addChild(this.graphics);
-
-    // for (let i = 0; i < 3; i++) {
-    //   const hintView = new HintView();
-    //   hintView.init();
-    //   hintView.setText(i);
-    //   hintView.position = new Point(
-    //     (this.size.width - hintView.size.width) / 2,
-    //     this.size.height - hintView.size.height * (i + 1)
-    //   );
-    //   this.addChild(hintView);
-    //
-    //   this.hintViews.push(hintView);
-    // }
   }
 
   drawOdd() {

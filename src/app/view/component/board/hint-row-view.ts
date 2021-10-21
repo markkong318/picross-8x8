@@ -17,23 +17,8 @@ export class HintRowView extends View {
   }
 
   public init() {
-    // this.hintViews = [];
-
     this.graphics = new PIXI.Graphics();
     this.addChild(this.graphics);
-
-    // for (let i = 0; i < 3; i++) {
-    //   const hintView = new HintView();
-    //   hintView.init();
-    //   hintView.setText(i);
-    //   hintView.position = new Point(
-    //     this.size.width - hintView.size.width * (i + 1),
-    //     (this.size.height - hintView.size.height) / 2,
-    //   );
-    //   this.addChild(hintView);
-    //
-    //   this.hintViews.push(hintView);
-    // }
   }
 
   drawOdd() {
