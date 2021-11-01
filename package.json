@@ -13,6 +13,7 @@
   "author": "markkong318",
   "license": "MIT",
   "dependencies": {
+    "blueimp-load-image": "^5.16.0",
     "flatted": "^3.2.2",
     "fontfaceobserver": "^2.1.0",
     "gsap": "^3.7.1",
@@ -26,7 +27,7 @@
     "gh-pages": "^3.2.3",
     "http-server": "~13.0.0",
     "jest": "~27.0.6",
-    "parcel-bundler": "~1.12.4",
+    "parcel-bundler": "^1.9.4",
     "rimraf": "~3.0.2",
     "ts-jest": "~27.0.4",
     "typescript": "~4.3.5"

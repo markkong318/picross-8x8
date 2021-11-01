@@ -12,7 +12,7 @@ import {
 } from "../../env/block";
 import {
   EVENT_UPDATE_PUZZLE_VIEW,
-  EVENT_UPDATE_HINT_VIEW,
+  EVENT_UPDATE_HINT_VIEW, EVENT_INIT_BOARD_VIEW,
 } from "../../env/event";
 import {GameModel} from "../../model/game-model";
 
@@ -34,13 +34,15 @@ export class BoardView extends View {
   public init() {
     this.gameModel = Bottle.get('gameModel');
 
-    this.initBackground();
-    this.initHintViews();
-    this.initPuzzleView();
-    this.initInfoView();
+    Event.on(EVENT_INIT_BOARD_VIEW, () => {
+      this.initBackground();
+      this.initHintViews();
+      this.initPuzzleView();
+      this.initInfoView();
 
-    this.updateBackground();
-    this.updatePuzzleViews();
+      this.updateBackground();
+      this.updatePuzzleViews();
+    });
 
     Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzleViews());
     Event.on(EVENT_UPDATE_HINT_VIEW, (x, y) => this.updateHintViews(x, y));

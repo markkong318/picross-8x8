@@ -24,8 +24,6 @@ export class GameModel extends Model {
       }
     }
 
-    this.answer[7][0] = BLOCK_BLACK;
-
     this.puzzle = new Array(8);
     for (let i = 0; i < this.puzzle.length; i++) {
       this.puzzle[i] = new Array(8);

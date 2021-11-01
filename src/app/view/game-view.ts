@@ -2,6 +2,8 @@ import * as PIXI from 'pixi.js';
 
 import {View} from "../../framework/view";
 import {BoardView} from "./component/board-view";
+import {EVENT_FETCH_IMAGE} from "../env/event";
+import Event from "../../framework/event";
 
 export class GameView extends View {
   constructor() {
@@ -19,5 +21,7 @@ export class GameView extends View {
     boardView.position = new PIXI.Point(200, 200);
     boardView.init();
     this.addChild(boardView);
+
+    Event.emit(EVENT_FETCH_IMAGE);
   }
 }

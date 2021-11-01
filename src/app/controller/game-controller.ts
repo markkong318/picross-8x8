@@ -1,3 +1,4 @@
+import loadImage from "blueimp-load-image"
 import {Controller} from "../../framework/controller";
 import {GameModel} from "../model/game-model";
 import Bottle from "../../framework/bottle";
@@ -10,7 +11,7 @@ import {
 import {
   EVENT_TOUCH_PUZZLE,
   EVENT_UPDATE_PUZZLE_VIEW,
-  EVENT_UPDATE_HINT_VIEW,
+  EVENT_UPDATE_HINT_VIEW, EVENT_FETCH_IMAGE, EVENT_INIT_DATA, EVENT_INIT_BOARD_VIEW,
 } from "../env/event";
 export class GameController extends Controller {
   private gameModel: GameModel;
@@ -29,13 +30,60 @@ export class GameController extends Controller {
       Event.emit(EVENT_UPDATE_HINT_VIEW, x, y);
 
       if (this.isCompleted()) {
-        console.log('completed')
+        console.log('completed');
       }
     });
 
-    this.initHintColumns();
-    this.initHintRows();
-    this.updateXPuzzle();
+    Event.on(EVENT_FETCH_IMAGE, () => {
+      this.initAnswer();
+    });
+
+    Event.on(EVENT_INIT_DATA, () => {
+      this.initHintColumns();
+      this.initHintRows();
+      this.updateXPuzzle();
+
+      Event.emit(EVENT_INIT_BOARD_VIEW);
+    });
+  }
+
+
+  initAnswer() {
+    loadImage(
+      "https://i.imgur.com/rIiqSQs.png",
+      (canvas) => {
+        console.log('init answer')
+        console.log(canvas);
+        const context = canvas.getContext('2d');
+        const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        const answers = new Array(canvas.width);
+        for (let i = 0; i < answers.length; i++) {
+          answers[i] = new Array(canvas.height);
+        }
+
+        for (let i = 0; i < answers.length; i++) {
+          for (let j = 0; j < answers[i].length; j++) {
+            answers[i][j] =
+              (
+                data[(i * answers[i].length + j) * 4] +
+                data[(i * answers[i].length + j) * 4 + 1] +
+                data[(i * answers[i].length + j) * 4 + 2]
+              ) / 3 > 128 ? BLOCK_BLACK : BLOCK_WHITE;
+          }
+        }
+
+        console.log("answer:");
+        console.log(answers);
+
+        this.gameModel.answer = answers;
+
+        console.log("inittt")
+
+        Event.emit(EVENT_INIT_DATA);
+      },
+      {canvas: true, crossOrigin: true},
+    );
   }
 
   initHintRows() {
@@ -72,7 +120,7 @@ export class GameController extends Controller {
       for (let j = 0; j < answer.length; j++) {
         if (answer[j][i] === BLOCK_WHITE) {
           if (count > 0) {
-            hintColumns[j].push(count);
+            hintColumns[i].push(count);
             count = 0;
           }
           continue;
