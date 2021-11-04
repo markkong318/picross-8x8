@@ -47,43 +47,16 @@ export class GameApplication extends Application {
     if (this.renderer.width > this.renderer.height) {
       const scale = Math.min(this.renderer.width / this.gameView.size.width, this.renderer.height / this.gameView.size.height) / this.renderer.resolution;
 
-      console.log("this.renderer.width: " + this.renderer.width);
-      console.log("this._gameView.size: " + this.gameView.size.width);
-
-      console.log("this.renderer.height: " + this.renderer.height);
-      console.log("this._gameView.height: " + this.gameView.size.height);
-
-      console.log("scale: " + scale);
-
-      console.log("this._gameView.scale.x: " + this.gameView.scale.x);
-
       this.gameView.scale.x = scale;
       this.gameView.scale.y = scale;
-
-      console.log("this._gameView.scale.x: " + this.gameView.scale.x);
-
-      console.log("this._gameView.size*: " + this.gameView.size.width);
 
       this.gameView.x = (this.renderer.width - this.gameView.size.width * scale * this.renderer.resolution) / 2 / this.renderer.resolution;
       this.gameView.y = (this.renderer.height - this.gameView.size.height * scale * this.renderer.resolution) / 2 / this.renderer.resolution;
     } else {
-      console.log("hello");
-
-      console.log("this.renderer.width: " + this.renderer.width);
-      console.log("this.renderer.height: " + this.renderer.height);
-      console.log("this._gameView.size: " + this.gameView.size.width);
-
       const scale = this.renderer.width / this.gameView.size.width / this.renderer.resolution;
-
-      console.log("scale: " + scale);
 
       this.gameView.scale.x = scale;
       this.gameView.scale.y = scale;
-      // this.gameView.width = this.renderer.width;
-      // this.gameView.height = this.renderer.height;
-
-      console.log("this._gameView.width: " + this.gameView.width);
-      console.log("this._gameView.height: " + this.gameView.height);
 
       this.gameView.x = 0;
       this.gameView.y = (this.renderer.height - this.gameView.size.height * scale * this.renderer.resolution) / 2 / this.renderer.resolution;

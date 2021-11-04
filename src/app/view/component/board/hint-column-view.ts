@@ -47,7 +47,7 @@ export class HintColumnView extends View {
       hintView.setText(hits[i]);
       hintView.position = new Point(
         (this.size.width - hintView.size.width) / 2,
-        this.size.height - hintView.size.height * (i + 1)
+        this.size.height - hintView.size.height * (hits.length - i)
       );
       this.addChild(hintView);
 

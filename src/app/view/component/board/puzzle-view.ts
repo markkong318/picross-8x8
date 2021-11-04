@@ -40,15 +40,18 @@ export class PuzzleView extends View {
     this.interactive = true;
 
     this.on('pointerdown', () => {
+      console.log("pointerdown " + this.posX + "," + this.posY)
       this.gameModel.isTouched = true;
       this.touch();
     });
 
     this.on('pointerup', () => {
+      console.log("pointerup " + this.posX + "," + this.posY)
       this.gameModel.isTouched = false;
     });
 
     this.on('pointerover', () => {
+      console.log("pointerover " + this.posX + "," + this.posY + " " + this.gameModel.isTouched)
       if (!this.gameModel.isTouched) return;
       this.touch();
     });

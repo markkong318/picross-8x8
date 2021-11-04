@@ -98,7 +98,7 @@ export class GameController extends Controller {
     loadImage(
       "https://i.imgur.com/rIiqSQs.png",
       (canvas) => {
-        console.log('init answer')
+        console.log('initOrigin')
         console.log(canvas);
         const context = canvas.getContext('2d');
         const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
@@ -163,7 +163,6 @@ export class GameController extends Controller {
 
   initHintColumns() {
     const answer = this.gameModel.answer;
-    // const hintColumns = this.gameModel.hintColumns;
 
     const hintColumns = new Array(8);
     for (let i = 0; i < hintColumns.length; i++) {

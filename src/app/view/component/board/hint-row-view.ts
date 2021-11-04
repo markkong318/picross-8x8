@@ -44,7 +44,7 @@ export class HintRowView extends View {
       hintView.init();
       hintView.setText(hits[i]);
       hintView.position = new Point(
-        this.size.width - hintView.size.width * (i + 1),
+        this.size.width - hintView.size.width * (hits.length - i),
         (this.size.height - hintView.size.height) / 2,
       );
       this.addChild(hintView);
