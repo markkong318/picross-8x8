@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 
 import {View} from "../../framework/view";
 import {BoardView} from "./component/board-view";
-import {EVENT_FETCH_IMAGE} from "../env/event";
+import {EVENT_FETCH_ANSWER_IMAGE} from "../env/event";
 import Event from "../../framework/event";
 
 export class GameView extends View {
@@ -22,6 +22,6 @@ export class GameView extends View {
     boardView.init();
     this.addChild(boardView);
 
-    Event.emit(EVENT_FETCH_IMAGE);
+    Event.emit(EVENT_FETCH_ANSWER_IMAGE);
   }
 }

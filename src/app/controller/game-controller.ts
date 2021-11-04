@@ -11,7 +11,12 @@ import {
 import {
   EVENT_TOUCH_PUZZLE,
   EVENT_UPDATE_PUZZLE_VIEW,
-  EVENT_UPDATE_HINT_VIEW, EVENT_FETCH_IMAGE, EVENT_INIT_DATA, EVENT_INIT_BOARD_VIEW,
+  EVENT_UPDATE_HINT_VIEW,
+  EVENT_FETCH_ANSWER_IMAGE,
+  EVENT_INIT_DATA,
+  EVENT_INIT_BOARD_VIEW,
+  EVENT_COMPLETE_PUZZLE,
+  EVENT_FETCH_ORIGIN_IMAGE,
 } from "../env/event";
 export class GameController extends Controller {
   private gameModel: GameModel;
@@ -24,31 +29,36 @@ export class GameController extends Controller {
     Event.on(EVENT_TOUCH_PUZZLE, (x, y) => {
       this.togglePuzzle(x, y);
       this.clearXPuzzle();
-      this.updateXPuzzle();
+      this.updateXPuzzles();
 
       Event.emit(EVENT_UPDATE_PUZZLE_VIEW);
       Event.emit(EVENT_UPDATE_HINT_VIEW, x, y);
 
       if (this.isCompleted()) {
         console.log('completed');
+        Event.emit(EVENT_COMPLETE_PUZZLE);
       }
     });
 
-    Event.on(EVENT_FETCH_IMAGE, () => {
-      this.initAnswer();
+    Event.on(EVENT_FETCH_ANSWER_IMAGE, () => {
+      this.initAnswer(EVENT_FETCH_ORIGIN_IMAGE);
+    });
+
+    Event.on(EVENT_FETCH_ORIGIN_IMAGE, () => {
+      this.initOrigin(EVENT_INIT_DATA);
     });
 
     Event.on(EVENT_INIT_DATA, () => {
       this.initHintColumns();
       this.initHintRows();
-      this.updateXPuzzle();
+      this.initPuzzles()
+      this.updateXPuzzles();
 
       Event.emit(EVENT_INIT_BOARD_VIEW);
     });
   }
 
-
-  initAnswer() {
+  initAnswer(next) {
     loadImage(
       "https://i.imgur.com/rIiqSQs.png",
       (canvas) => {
@@ -78,9 +88,43 @@ export class GameController extends Controller {
 
         this.gameModel.answer = answers;
 
-        console.log("inittt")
+        Event.emit(next);
+      },
+      {canvas: true, crossOrigin: true},
+    );
+  }
 
-        Event.emit(EVENT_INIT_DATA);
+  initOrigin(next) {
+    loadImage(
+      "https://i.imgur.com/rIiqSQs.png",
+      (canvas) => {
+        console.log('init answer')
+        console.log(canvas);
+        const context = canvas.getContext('2d');
+        const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        const origins = new Array(canvas.width);
+        for (let i = 0; i < origins.length; i++) {
+          origins[i] = new Array(canvas.height);
+        }
+
+        for (let i = 0; i < origins.length; i++) {
+          for (let j = 0; j < origins[i].length; j++) {
+            origins[i][j] =
+              (
+                data[(i * origins[i].length + j) * 4] * 255 * 255 +
+                data[(i * origins[i].length + j) * 4 + 1] * 255 +
+                data[(i * origins[i].length + j) * 4 + 2]
+              );
+          }
+        }
+
+        console.log("origins:");
+        console.log(origins);
+
+        this.gameModel.origins = origins;
+
+        Event.emit(next);
       },
       {canvas: true, crossOrigin: true},
     );
@@ -88,7 +132,12 @@ export class GameController extends Controller {
 
   initHintRows() {
     const answer = this.gameModel.answer;
-    const hintRows = this.gameModel.hintRows;
+    // const hintRows = this.gameModel.hintRows;
+
+    const hintRows = new Array(8);
+    for (let i = 0; i < hintRows.length; i++) {
+      hintRows[i] = [];
+    }
 
     for (let i = 0; i < answer.length; i++) {
       let count = 0;
@@ -108,11 +157,18 @@ export class GameController extends Controller {
         hintRows[i].push(count);
       }
     }
+
+    this.gameModel.hintRows = hintRows;
   }
 
   initHintColumns() {
     const answer = this.gameModel.answer;
-    const hintColumns = this.gameModel.hintColumns;
+    // const hintColumns = this.gameModel.hintColumns;
+
+    const hintColumns = new Array(8);
+    for (let i = 0; i < hintColumns.length; i++) {
+      hintColumns[i] = [];
+    }
 
     for (let i = 0; i < answer[0].length; i++) {
       let count = 0;
@@ -132,6 +188,20 @@ export class GameController extends Controller {
         hintColumns[i].push(count);
       }
     }
+
+    this.gameModel.hintColumns = hintColumns;
+  }
+
+  initPuzzles() {
+    const puzzles = new Array(8);
+    for (let i = 0; i < puzzles.length; i++) {
+      puzzles[i] = new Array(8);
+      for (let j = 0; j < puzzles[i].length; j++) {
+        puzzles[i][j] = BLOCK_WHITE;
+      }
+    }
+
+    this.gameModel.puzzle = puzzles
   }
 
   isCompleted() {
@@ -201,16 +271,6 @@ export class GameController extends Controller {
       if (puzzle[j][i] === BLOCK_X) {
         puzzle[j][i] = BLOCK_WHITE;
       }
-    }
-  }
-
-  updateXPuzzle() {
-    for (let i = 0; i < this.gameModel.puzzle.length; i++) {
-      this.updateXPuzzleRow(i);
-    }
-
-    for(let i = 0; i < this.gameModel.puzzle[0].length; i++) {
-      this.updateXPuzzleColumn(i);
     }
   }
 

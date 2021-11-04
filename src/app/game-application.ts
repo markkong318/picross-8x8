@@ -68,8 +68,25 @@ export class GameApplication extends Application {
       this.gameView.y = (this.renderer.height - this.gameView.size.height * scale * this.renderer.resolution) / 2 / this.renderer.resolution;
     } else {
       console.log("hello");
-      this.gameView.width = this.renderer.width;
-      this.gameView.height = this.renderer.height;
+
+      console.log("this.renderer.width: " + this.renderer.width);
+      console.log("this.renderer.height: " + this.renderer.height);
+      console.log("this._gameView.size: " + this.gameView.size.width);
+
+      const scale = this.renderer.width / this.gameView.size.width / this.renderer.resolution;
+
+      console.log("scale: " + scale);
+
+      this.gameView.scale.x = scale;
+      this.gameView.scale.y = scale;
+      // this.gameView.width = this.renderer.width;
+      // this.gameView.height = this.renderer.height;
+
+      console.log("this._gameView.width: " + this.gameView.width);
+      console.log("this._gameView.height: " + this.gameView.height);
+
+      this.gameView.x = 0;
+      this.gameView.y = (this.renderer.height - this.gameView.size.height * scale * this.renderer.resolution) / 2 / this.renderer.resolution;
     }
   }
 }
