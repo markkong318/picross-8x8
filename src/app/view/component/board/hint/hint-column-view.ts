@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
-import {View} from '../../../../framework/view';
-import {Size} from '../../../../framework/size';
+import {View} from '../../../../../framework/view';
+import {Size} from '../../../../../framework/size';
 import {HintView} from "./hint-view";
 import {Point} from "pixi.js";
 

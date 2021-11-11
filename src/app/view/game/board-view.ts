@@ -1,29 +1,25 @@
 import * as PIXI from 'pixi.js';
 
 import {View} from "../../../framework/view";
-import {PuzzleView} from "./board/puzzle-view";
-import {HintColumnView} from "./board/hint-column-view";
-import {HintRowView} from "./board/hint-row-view";
+import {HintColumnView} from "../component/board/hint/hint-column-view";
+import {HintRowView} from "../component/board/hint/hint-row-view";
 import Bottle from '../../../framework/bottle';
 import Event from '../../../framework/event';
-import {InfoView} from "./board/info-view";
+import {InfoView} from "../component/board/info-view";
 import {
-  BLOCK_BLACK, BLOCK_WHITE, BLOCK_X,
-} from "../../env/block";
-import {
-  EVENT_UPDATE_PUZZLE_VIEW,
-  EVENT_UPDATE_HINT_VIEW, EVENT_INIT_BOARD_VIEW,
+  EVENT_UPDATE_HINT_VIEW, EVENT_INIT_BOARD_VIEW, EVENT_INIT_PUZZLES_VIEW,
 } from "../../env/event";
 import {GameModel} from "../../model/game-model";
+import {PuzzlesView} from "./board/puzzles-view";
 
 export class BoardView extends View {
   private graphics: PIXI.Graphics;
-  private puzzleBackgroundGraphics: PIXI.Graphics;
 
-  private puzzleViews;
   private hintRowViews = [];
   private hintColumnViews = [];
   private infoView;
+
+  private puzzlesView: PuzzlesView;
 
   private gameModel: GameModel;
 
@@ -34,18 +30,28 @@ export class BoardView extends View {
   public init() {
     this.gameModel = Bottle.get('gameModel');
 
+
+
     Event.on(EVENT_INIT_BOARD_VIEW, () => {
       this.initBackground();
       this.initHintViews();
-      this.initPuzzleView();
+      this.initPuzzlesView();
       this.initInfoView();
 
       this.updateBackground();
-      this.updatePuzzleViews();
+
+      Event.emit(EVENT_INIT_PUZZLES_VIEW);
     });
 
-    Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzleViews());
+    // Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzleViews());
     Event.on(EVENT_UPDATE_HINT_VIEW, (x, y) => this.updateHintViews(x, y));
+  }
+
+  initPuzzlesView() {
+    this.puzzlesView = new PuzzlesView();
+    this.puzzlesView.position = new PIXI.Point(0, 0);
+    this.puzzlesView.init();
+    this.addChild(this.puzzlesView)
   }
 
   initHintViews() {
@@ -78,31 +84,6 @@ export class BoardView extends View {
     }
   }
 
-  initPuzzleView() {
-    this.puzzleBackgroundGraphics = new PIXI.Graphics();
-    this.addChild(this.puzzleBackgroundGraphics);
-
-    this.puzzleBackgroundGraphics.beginFill(0x656566);
-    this.puzzleBackgroundGraphics.drawRoundedRect(-1, -1, 32 * 8 + 2, 32 * 8 + 2, 5);
-
-    this.puzzleViews = new Array(8);
-
-    for (let i = 0; i < this.puzzleViews.length; i++) {
-      this.puzzleViews[i] = new Array(8);
-    }
-
-    for (let i = 0; i < this.puzzleViews.length; i++) {
-      for (let j = 0; j < this.puzzleViews[i].length; j++) {
-        this.puzzleViews[i][j] = new PuzzleView(i, j);
-        this.puzzleViews[i][j].position = new PIXI.Point(j * this.puzzleViews[i][j].size.height, i * this.puzzleViews[i][j].size.width);
-        this.puzzleViews[i][j].init();
-        this.puzzleViews[i][j].drawWhite();
-
-        this.addChild(this.puzzleViews[i][j]);
-      }
-    }
-  }
-
   initInfoView() {
     this.infoView = new InfoView();
     this.infoView.init();
@@ -116,8 +97,8 @@ export class BoardView extends View {
   }
 
   updateBackground() {
-    const width = this.hintRowViews[0].size.width + this.puzzleViews[0][0].size.width * this.puzzleViews[0].length;
-    const height = this.hintColumnViews[0].size.height + this.puzzleViews[0][0].size.height * this.puzzleViews.length;
+    const width = this.hintRowViews[0].size.width + 32 * 8;
+    const height = this.hintColumnViews[0].size.height + 32 * 8;
 
     const padding = 5;
 
@@ -129,26 +110,6 @@ export class BoardView extends View {
       height + padding * 2,
       8
     );
-  }
-
-  updatePuzzleViews() {
-    const puzzle = this.gameModel.puzzle;
-
-    for (let i = 0; i < this.puzzleViews.length; i++) {
-      for (let j = 0; j < this.puzzleViews[i].length; j++) {
-        switch (puzzle[i][j]) {
-          case BLOCK_WHITE:
-            this.puzzleViews[i][j].drawWhite();
-            break;
-          case BLOCK_BLACK:
-            this.puzzleViews[i][j].drawBlack();
-            break;
-          case BLOCK_X:
-            this.puzzleViews[i][j].drawX();
-            break;
-        }
-      }
-    }
   }
 
   updateHintViews(x, y) {
