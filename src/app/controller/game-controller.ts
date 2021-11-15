@@ -9,14 +9,14 @@ import {
   BLOCK_X,
 } from "../env/block";
 import {
-  EVENT_TOUCH_PUZZLE,
+  EVENT_START_TOUCH_PUZZLE,
   EVENT_UPDATE_PUZZLE_VIEW,
   EVENT_UPDATE_HINT_VIEW,
   EVENT_FETCH_ANSWER_IMAGE,
   EVENT_INIT_DATA,
   EVENT_INIT_BOARD_VIEW,
   EVENT_COMPLETE_PUZZLE,
-  EVENT_FETCH_ORIGIN_IMAGE,
+  EVENT_FETCH_ORIGIN_IMAGE, EVENT_END_TOUCH_PUZZLE,
 } from "../env/event";
 export class GameController extends Controller {
   private gameModel: GameModel;
@@ -26,8 +26,15 @@ export class GameController extends Controller {
 
     this.gameModel = Bottle.get('gameModel');
 
-    Event.on(EVENT_TOUCH_PUZZLE, (x, y) => {
+    Event.on(EVENT_START_TOUCH_PUZZLE, (x, y) => {
+
       this.togglePuzzle(x, y);
+
+      Event.emit(EVENT_UPDATE_PUZZLE_VIEW);
+      Event.emit(EVENT_UPDATE_HINT_VIEW, x, y);
+    });
+
+    Event.on(EVENT_END_TOUCH_PUZZLE, (x, y) => {
       this.clearXPuzzle();
       this.updateXPuzzles();
 
@@ -132,7 +139,6 @@ export class GameController extends Controller {
 
   initHintRows() {
     const answer = this.gameModel.answer;
-    // const hintRows = this.gameModel.hintRows;
 
     const hintRows = new Array(8);
     for (let i = 0; i < hintRows.length; i++) {

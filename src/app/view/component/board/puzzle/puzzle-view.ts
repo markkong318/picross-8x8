@@ -4,7 +4,7 @@ import {View} from '../../../../../framework/view';
 import {Size} from '../../../../../framework/size';
 import Event from '../../../../../framework/event';
 import {
-  EVENT_TOUCH_PUZZLE,
+  EVENT_START_TOUCH_PUZZLE,
 } from '../../../../env/event';
 import Bottle from "../../../../../framework/bottle";
 import {GameModel} from "../../../../model/game-model";
@@ -38,23 +38,6 @@ export class PuzzleView extends View {
     this.addChild(this.graphics);
 
     this.interactive = true;
-
-    this.on('pointerdown', () => {
-      console.log("pointerdown " + this.posX + "," + this.posY)
-      this.gameModel.isTouched = true;
-      this.touch();
-    });
-
-    this.on('pointerup', () => {
-      console.log("pointerup " + this.posX + "," + this.posY)
-      this.gameModel.isTouched = false;
-    });
-
-    this.on('pointerover', () => {
-      console.log("pointerover " + this.posX + "," + this.posY + " " + this.gameModel.isTouched)
-      if (!this.gameModel.isTouched) return;
-      this.touch();
-    });
   }
 
   drawWhite() {
@@ -88,9 +71,5 @@ export class PuzzleView extends View {
       .lineTo(this.size.width / 2 - this.size.width / 5.5, this.size.height / 2 + this.size.height / 5.5);
 
     this.graphics.lineStyle();
-  }
-
-  touch() {
-    Event.emit(EVENT_TOUCH_PUZZLE, this.posX, this.posY);
   }
 }
