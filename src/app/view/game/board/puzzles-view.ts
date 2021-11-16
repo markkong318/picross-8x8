@@ -11,6 +11,7 @@ import {
   EVENT_UPDATE_PUZZLE_VIEW
 } from "../../../env/event";
 import Bottle from "../../../../framework/bottle";
+import {PUZZLE_HEIGHT, PUZZLE_WIDTH} from "../../../env/puzzle";
 
 export class PuzzlesView extends View {
   private puzzleViews: PuzzleView[][];
@@ -64,7 +65,7 @@ export class PuzzlesView extends View {
     this.addChild(this.backgroundGraphics);
 
     this.backgroundGraphics.beginFill(0x656566);
-    this.backgroundGraphics.drawRoundedRect(-1, -1, 32 * 8 + 2, 32 * 8 + 2, 5);
+    this.backgroundGraphics.drawRoundedRect(-1, -1, PUZZLE_WIDTH * 8 + 2, PUZZLE_HEIGHT * 8 + 2, 5);
 
     this.puzzleViews = new Array(8);
 
@@ -105,8 +106,8 @@ export class PuzzlesView extends View {
   }
 
   getTouchPosition(x: number, y: number) {
-    const posX = Math.floor(x / 32);
-    const posY = Math.floor(y / 32);
+    const posX = Math.floor(x / PUZZLE_WIDTH);
+    const posY = Math.floor(y / PUZZLE_HEIGHT);
 
     if (posX < 0 || posX > 8 || posY < 0 || posY > 8) {
       console.log('failed')
