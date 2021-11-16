@@ -30,7 +30,7 @@ export class HintRowsView extends View {
 
     for (let i = 0; i < 8; i++) {
       const hintRowView = new HintRowView();
-      hintRowView.position = new PIXI.Point(-hintRowView.size.width, i * PUZZLE_HEIGHT);
+      hintRowView.position = new PIXI.Point(0, i * PUZZLE_HEIGHT);
       hintRowView.init();
 
       (i % 2) ? hintRowView.drawOdd() : hintRowView.drawEven();

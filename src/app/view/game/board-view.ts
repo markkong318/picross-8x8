@@ -5,7 +5,7 @@ import {HintColumnView} from "../component/board/hint/hint-column-view";
 import {HintRowView} from "../component/board/hint/hint-row-view";
 import Bottle from '../../../framework/bottle';
 import Event from '../../../framework/event';
-import {InfoView} from "../component/board/info-view";
+import {InfoView} from "./board/info-view";
 import {
   EVENT_UPDATE_HINT_VIEW, EVENT_INIT_BOARD_VIEW, EVENT_INIT_PUZZLES_VIEW, EVENT_UPDATE_BOARD_VIEW_POSITION,
 } from "../../env/event";
@@ -25,6 +25,8 @@ export class BoardView extends View {
 
   private gameModel: GameModel;
 
+  private padding: number = 5;
+
   constructor() {
     super();
   }
@@ -33,12 +35,57 @@ export class BoardView extends View {
     this.gameModel = Bottle.get('gameModel');
 
     Event.on(EVENT_INIT_BOARD_VIEW, () => {
-      this.initBackground();
-      this.initHintViews();
-      this.initPuzzlesView();
-      this.initInfoView();
+      // this.initBackground();
+      // this.initHintViews();
+      // this.initPuzzlesView();
+      // this.initInfoView();
+      //
+      // this.updateBackground();
 
-      this.updateBackground();
+      this.graphics = new PIXI.Graphics();
+      this.addChild(this.graphics);
+
+      this.hintColumnsView = new HintColumnsView();
+      this.hintColumnsView.init();
+      this.addChild(this.hintColumnsView);
+
+      this.hintRowsView = new HintRowsView();
+      this.hintRowsView.init();
+      this.addChild(this.hintRowsView);
+
+      this.puzzlesView = new PuzzlesView();
+      this.puzzlesView.init();
+      this.addChild(this.puzzlesView);
+
+      this.infoView = new InfoView();
+      this.infoView.init();
+      this.addChild(this.infoView)
+
+      this.graphics.beginFill(0xffffff);
+      this.graphics.drawRoundedRect(
+        0,
+        0,
+        this.hintRowsView.width + this.hintColumnsView.width + this.padding * 2,
+        this.hintColumnsView.height + this.hintRowsView.height + this.padding * 2,
+        8
+      );
+
+      this.puzzlesView.position = new PIXI.Point(
+        this.padding + this.hintRowsView.width,
+        this.padding + this.hintColumnsView.height
+      );
+
+      this.hintColumnsView.position = new PIXI.Point(
+        this.padding + this.hintRowsView.width,
+        this.padding
+      );
+
+      this.hintRowsView.position = new PIXI.Point(
+        this.padding,
+        this.padding + this.hintColumnsView.height
+      );
+
+      this.infoView.position = new PIXI.Point(this.padding, this.padding);
 
       Event.emit(EVENT_INIT_PUZZLES_VIEW);
       Event.emit(EVENT_UPDATE_BOARD_VIEW_POSITION);

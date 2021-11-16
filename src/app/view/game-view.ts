@@ -22,7 +22,6 @@ export class GameView extends View {
     this.addChild(bg);
 
     this.boardView = new BoardView();
-    this.boardView.position = new PIXI.Point(200, 200);
     this.boardView.init();
     this.addChild(this.boardView);
 
@@ -36,9 +35,12 @@ export class GameView extends View {
     console.log("this.boardView.width:" + this.boardView.width);
     console.log("this.boardView.height:" + this.boardView.height);
 
-    // this.boardView.position = new PIXI.Point(
-    //   (this.width - this.boardView.width) / 2,
-    //   (this.height - this.boardView.height) / 2
-    // );
+    console.log("x:" + (this.width - this.boardView.width) / 2)
+    console.log("y:" + (this.height - this.boardView.height) / 2)
+
+    this.boardView.position = new PIXI.Point(
+      (this.size.width - this.boardView.width) / 2,
+      (this.size.height - this.boardView.height) / 2
+    );
   }
 }

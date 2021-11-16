@@ -29,7 +29,7 @@ export class HintColumnsView extends View {
 
     for (let i = 0; i < 8; i++) {
       const hintColumnView = new HintColumnView();
-      hintColumnView.position = new PIXI.Point(i * PUZZLE_WIDTH, -hintColumnView.size.height);
+      hintColumnView.position = new PIXI.Point(i * PUZZLE_WIDTH, 0);
       hintColumnView.init();
 
       (i % 2) ? hintColumnView.drawOdd() : hintColumnView.drawEven();

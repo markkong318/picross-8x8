@@ -6,7 +6,7 @@ import {Size} from '../../../../framework/size';
 export class InfoView extends View {
   private graphics: PIXI.Graphics;
 
-  public size = new Size(150 -5 , 150 - 5);
+  public size = new Size(150 - 5 , 150 - 5);
   private titleText: PIXI.Text;
   private timerText: PIXI.Text;
 
