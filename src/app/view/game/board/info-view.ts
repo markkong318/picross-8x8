@@ -6,7 +6,7 @@ import {Size} from '../../../../framework/size';
 export class InfoView extends View {
   private graphics: PIXI.Graphics;
 
-  public size = new Size(150 - 5 , 150 - 5);
+  public size = new Size(150, 150 );
   private titleText: PIXI.Text;
   private timerText: PIXI.Text;
 
@@ -39,7 +39,7 @@ export class InfoView extends View {
     this.timerText = new PIXI.Text('00:00:00', {
       fontFamily: 'lato',
       fill: ['#ffffff'],
-      fontSize: 22,
+      fontSize: 25,
       letterSpacing: 5,
     });
     this.timerText.anchor.x = 0.5;

@@ -7,7 +7,7 @@ import Event from "../../../../framework/event";
 import {
   EVENT_END_TOUCH_PUZZLE,
   EVENT_INIT_PUZZLES_VIEW,
-  EVENT_START_TOUCH_PUZZLE,
+  EVENT_START_TOUCH_PUZZLE, EVENT_UPDATE_HINT_VIEW,
   EVENT_UPDATE_PUZZLE_VIEW
 } from "../../../env/event";
 import Bottle from "../../../../framework/bottle";
@@ -32,13 +32,33 @@ export class HintColumnsView extends View {
       hintColumnView.position = new PIXI.Point(i * PUZZLE_WIDTH, 0);
       hintColumnView.init();
 
-      (i % 2) ? hintColumnView.drawOdd() : hintColumnView.drawEven();
+      if (i % 2) {
+        hintColumnView.drawOdd();
+      } else {
+        hintColumnView.drawEven();
+      }
 
       hintColumnView.drawHints(this.gameModel.hintColumns[i]);
 
       this.addChild(hintColumnView);
 
       this.hintColumnViews.push(hintColumnView);
+    }
+
+    Event.on(EVENT_UPDATE_HINT_VIEW, (x, y) => this.updateSelect(x));
+  }
+
+  updateSelect(idx) {
+    for (let i = 0; i < this.hintColumnViews.length; i++) {
+      if (i === idx) {
+        this.hintColumnViews[i].drawSelect();
+      } else {
+        if (i % 2) {
+          this.hintColumnViews[i].drawOdd();
+        } else {
+          this.hintColumnViews[i].drawEven();
+        }
+      }
     }
   }
 }

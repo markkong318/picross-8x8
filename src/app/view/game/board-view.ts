@@ -35,13 +35,6 @@ export class BoardView extends View {
     this.gameModel = Bottle.get('gameModel');
 
     Event.on(EVENT_INIT_BOARD_VIEW, () => {
-      // this.initBackground();
-      // this.initHintViews();
-      // this.initPuzzlesView();
-      // this.initInfoView();
-      //
-      // this.updateBackground();
-
       this.graphics = new PIXI.Graphics();
       this.addChild(this.graphics);
 

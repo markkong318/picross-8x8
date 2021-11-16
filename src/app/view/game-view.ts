@@ -11,7 +11,7 @@ export class GameView extends View {
   constructor() {
     super();
 
-    Event.on(EVENT_UPDATE_BOARD_VIEW_POSITION, () => this.centerBoardView());
+    Event.on(EVENT_UPDATE_BOARD_VIEW_POSITION, () => this.resizeBoardView());
   }
 
   public init() {
@@ -28,16 +28,7 @@ export class GameView extends View {
     Event.emit(EVENT_FETCH_ANSWER_IMAGE);
   }
 
-  private centerBoardView() {
-    console.log("this.width:" + this.width);
-    console.log("this.height:" + this.height);
-
-    console.log("this.boardView.width:" + this.boardView.width);
-    console.log("this.boardView.height:" + this.boardView.height);
-
-    console.log("x:" + (this.width - this.boardView.width) / 2)
-    console.log("y:" + (this.height - this.boardView.height) / 2)
-
+  public resizeBoardView() {
     this.boardView.position = new PIXI.Point(
       (this.size.width - this.boardView.width) / 2,
       (this.size.height - this.boardView.height) / 2
