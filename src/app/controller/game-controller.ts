@@ -103,7 +103,7 @@ export class GameController extends Controller {
 
   initOrigin(next) {
     loadImage(
-      "https://i.imgur.com/rIiqSQs.png",
+      "https://i.imgur.com/jjVYPNF.jpg",
       (canvas) => {
         console.log('initOrigin')
         console.log(canvas);
@@ -119,10 +119,12 @@ export class GameController extends Controller {
           for (let j = 0; j < origins[i].length; j++) {
             origins[i][j] =
               (
-                data[(i * origins[i].length + j) * 4] * 255 * 255 +
-                data[(i * origins[i].length + j) * 4 + 1] * 255 +
+                data[(i * origins[i].length + j) * 4] * 256 * 256 +
+                data[(i * origins[i].length + j) * 4 + 1] * 256 +
                 data[(i * origins[i].length + j) * 4 + 2]
               );
+
+            console.log(`(${i}, ${j}) => rgb(${data[(i * origins[i].length + j) * 4]}, ${data[(i * origins[i].length + j) * 4 + 1]}, ${data[(i * origins[i].length + j) * 4 + 2]})`)
           }
         }
 

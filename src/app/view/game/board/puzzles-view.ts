@@ -8,7 +8,7 @@ import {
   EVENT_END_TOUCH_PUZZLE,
   EVENT_INIT_PUZZLES_VIEW,
   EVENT_START_TOUCH_PUZZLE,
-  EVENT_UPDATE_PUZZLE_VIEW
+  EVENT_UPDATE_PUZZLE_VIEW, EVENT_UPDATE_PUZZLES_VIEW_TO_COLOR
 } from "../../../env/event";
 import Bottle from "../../../../framework/bottle";
 import {PUZZLE_HEIGHT, PUZZLE_WIDTH} from "../../../env/puzzle";
@@ -28,14 +28,15 @@ export class PuzzlesView extends View {
   init() {
     this.gameModel = Bottle.get('gameModel');
 
-    Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzleViews());
+
 
     Event.on(EVENT_INIT_PUZZLES_VIEW, () => {
-      this.initPuzzleViews();
-      this.updatePuzzleViews();
+      this.initPuzzlesView();
+      this.updatePuzzlesView();
     });
 
-    this.interactive = true;
+    Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzlesView());
+    Event.on(EVENT_UPDATE_PUZZLES_VIEW_TO_COLOR, () => this.updatePuzzlesViewToColor());
 
     this.on("touchstart", (event) => {
       const {x, y} = event.data.getLocalPosition(event.currentTarget)
@@ -43,7 +44,6 @@ export class PuzzlesView extends View {
       const {posX, posY} = this.getTouchPosition(x, y);
       this.touchStart(posX, posY);
     });
-
 
     this.on("touchmove", (event) => {
       const {x, y} = event.data.getLocalPosition(event.currentTarget);
@@ -60,7 +60,9 @@ export class PuzzlesView extends View {
     });
   }
 
-  initPuzzleViews() {
+  initPuzzlesView() {
+    this.interactive = true;
+
     this.backgroundGraphics = new PIXI.Graphics();
     this.addChild(this.backgroundGraphics);
 
@@ -85,7 +87,7 @@ export class PuzzlesView extends View {
     }
   }
 
-  updatePuzzleViews() {
+  updatePuzzlesView() {
     const puzzle = this.gameModel.puzzle;
 
     for (let i = 0; i < this.puzzleViews.length; i++) {
@@ -101,6 +103,19 @@ export class PuzzlesView extends View {
             this.puzzleViews[i][j].drawX();
             break;
         }
+      }
+    }
+  }
+
+  updatePuzzlesViewToColor() {
+    console.log('updatePuzzlesViewToColor')
+    const origins = this.gameModel.origins;
+
+    console.log(origins)
+
+    for (let i = 0; i < this.puzzleViews.length; i++) {
+      for (let j = 0; j < this.puzzleViews[i].length; j++) {
+        this.puzzleViews[i][j].drawColor(origins[i][j]);
       }
     }
   }

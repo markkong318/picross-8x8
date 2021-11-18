@@ -72,4 +72,9 @@ export class PuzzleView extends View {
 
     this.graphics.lineStyle();
   }
+
+  drawColor(color) {
+    this.graphics.beginFill(color);
+    this.graphics.drawRoundedRect(1, 1, this.size.width - 2, this.size.height - 2, 5);
+  }
 }

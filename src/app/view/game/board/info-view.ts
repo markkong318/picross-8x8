@@ -40,7 +40,7 @@ export class InfoView extends View {
       fontFamily: 'lato',
       fill: ['#ffffff'],
       fontSize: 25,
-      letterSpacing: 5,
+      // letterSpacing: 5,
     });
     this.timerText.anchor.x = 0.5;
     this.timerText.anchor.y = 0.5;
