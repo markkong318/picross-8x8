@@ -6,11 +6,13 @@ import {GameController} from "./controller/game-controller";
 import {Application} from "../framework/application"
 import {Size} from "../framework/size";
 import Bottle from "../framework/bottle";
+import gsap from "gsap";
 
 export class GameApplication extends Application {
   private gameModel: GameModel;
   private gameController: GameController;
   private gameView: GameView;
+  private timeline: gsap.core.Timeline;
 
   constructor(options?) {
     super(options);
@@ -29,6 +31,11 @@ export class GameApplication extends Application {
   }
 
   public initScene(): void {
+    Bottle.set('renderer', this.renderer);
+
+    this.timeline = gsap.timeline();
+    Bottle.set('timeline', this.timeline);
+
     this.gameModel = new GameModel();
     Bottle.set('gameModel', this.gameModel);
 

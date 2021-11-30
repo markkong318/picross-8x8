@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import gsap from 'gsap';
 
 import {View} from "../../framework/view";
 import {BoardView} from "./game/board-view";
@@ -6,10 +7,12 @@ import {EVENT_FETCH_ANSWER_IMAGE, EVENT_UPDATE_BOARD_VIEW_POSITION} from "../env
 import Event from "../../framework/event";
 import {ClearView} from "./game/clear-view";
 import {Size} from "../../framework/size";
+import Bottle from "../../framework/bottle";
 
 export class GameView extends View {
   private boardView: BoardView;
   private clearView: ClearView;
+
 
   constructor() {
     super();
@@ -27,6 +30,7 @@ export class GameView extends View {
     this.boardView = new BoardView();
     this.boardView.init();
     this.addChild(this.boardView);
+    Bottle.set('boardView', this.boardView);
 
     this.clearView = new ClearView();
     this.clearView.size = new Size(this.size.width, this.size.height);

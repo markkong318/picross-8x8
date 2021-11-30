@@ -5,7 +5,6 @@ import Bottle from '../../../framework/bottle';
 import Event from '../../../framework/event';
 import {InfoView} from "./board/info-view";
 import {
-  EVENT_FOO,
   EVENT_INIT_BOARD_VIEW, EVENT_INIT_PUZZLES_VIEW, EVENT_UPDATE_BOARD_VIEW_POSITION,
 } from "../../env/event";
 import {GameModel} from "../../model/game-model";
@@ -82,8 +81,6 @@ export class BoardView extends View {
 
       Event.emit(EVENT_INIT_PUZZLES_VIEW);
       Event.emit(EVENT_UPDATE_BOARD_VIEW_POSITION);
-
-      Event.emit(EVENT_FOO);
     });
   }
 }
