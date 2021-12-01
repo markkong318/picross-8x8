@@ -45,7 +45,7 @@ export class HintColumnsView extends View {
       this.hintColumnViews.push(hintColumnView);
     }
 
-    Event.on(EVENT_UPDATE_HINT_VIEW, (x, y) => this.updateSelect(x));
+    Event.on(EVENT_UPDATE_HINT_VIEW, (x, y) => this.updateSelect(y));
   }
 
   updateSelect(idx) {

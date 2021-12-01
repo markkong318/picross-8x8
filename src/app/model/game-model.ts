@@ -14,6 +14,8 @@ export class GameModel extends Model {
   public isStart: boolean = false;
   public isTouched: boolean = false;
 
+  public timer: number = 0;
+
   constructor() {
     super();
 

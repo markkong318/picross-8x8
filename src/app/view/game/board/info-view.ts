@@ -2,8 +2,14 @@ import * as PIXI from 'pixi.js';
 
 import {View} from '../../../../framework/view';
 import {Size} from '../../../../framework/size';
+import Event from "../../../../framework/event";
+import {EVENT_UPDATE_TIMER} from "../../../env/event";
+import {GameModel} from "../../../model/game-model";
+import Bottle from "../../../../framework/bottle";
 
 export class InfoView extends View {
+  private gameModel: GameModel;
+
   private graphics: PIXI.Graphics;
 
   public size = new Size(150, 150 );
@@ -15,6 +21,8 @@ export class InfoView extends View {
   }
 
   public init() {
+    this.gameModel = Bottle.get('gameModel');
+
     this.graphics = new PIXI.Graphics();
     this.addChild(this.graphics);
 
@@ -39,14 +47,25 @@ export class InfoView extends View {
     this.timerText = new PIXI.Text('00:00:00', {
       fontFamily: 'lato',
       fill: ['#ffffff'],
-      fontSize: 25,
-      // letterSpacing: 5,
+      fontSize: 30,
+      letterSpacing: 3,
     });
     this.timerText.anchor.x = 0.5;
     this.timerText.anchor.y = 0.5;
     this.timerText.x = this.width / 2;
     this.timerText.y = 70;
-    this.addChild(this.timerText)
+    this.addChild(this.timerText);
+
+    Event.on(EVENT_UPDATE_TIMER, () => this.updateTimer());
   }
 
+  updateTimer() {
+    console.log(this.gameModel.timer);
+    const timer = this.gameModel.timer;
+    const hour = Math.floor(timer / (60 * 60));
+    const min = Math.floor(timer % (60 * 60) / 60);
+    const sec = timer % 60;
+
+    this.timerText.text = `${('00' + hour).slice(-2)}:${('00' + min).slice(-2)}:${('00' + sec).slice(-2)}`
+  }
 }

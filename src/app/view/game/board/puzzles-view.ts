@@ -1,4 +1,6 @@
 import * as PIXI from 'pixi.js';
+import gsap from "gsap";
+
 import {View} from "../../../../framework/view";
 import {PuzzleView} from "../../component/board/puzzle/puzzle-view";
 import {BLOCK_BLACK, BLOCK_WHITE, BLOCK_X} from "../../../env/block";
@@ -6,9 +8,10 @@ import {GameModel} from "../../../model/game-model";
 import Event from "../../../../framework/event";
 import {
   EVENT_END_TOUCH_PUZZLE,
-  EVENT_INIT_PUZZLES_VIEW,
+  EVENT_INIT_PUZZLES_VIEW, EVENT_PLAY_CLEAR_X,
   EVENT_START_TOUCH_PUZZLE,
-  EVENT_UPDATE_PUZZLE_VIEW, EVENT_UPDATE_PUZZLES_VIEW_TO_COLOR
+  EVENT_UPDATE_PUZZLE_VIEW,
+  EVENT_PLAY_COLORIZE, EVENT_COMPLETE_PUZZLE, EVENT_START_PUZZLE
 } from "../../../env/event";
 import Bottle from "../../../../framework/bottle";
 import {PUZZLE_HEIGHT, PUZZLE_WIDTH} from "../../../env/puzzle";
@@ -21,6 +24,9 @@ export class PuzzlesView extends View {
   private posX: number;
   private posY: number;
 
+  private clearXTimeline: gsap.core.Timeline;
+  private colorizeTimeline: gsap.core.Timeline;
+
   constructor() {
     super();
   }
@@ -28,35 +34,47 @@ export class PuzzlesView extends View {
   init() {
     this.gameModel = Bottle.get('gameModel');
 
+    this.clearXTimeline = gsap.timeline();
+    Bottle.set('clearXTimeline', this.clearXTimeline);
 
+    this.colorizeTimeline = gsap.timeline();
+    Bottle.set('colorizeTimeline', this.colorizeTimeline);
 
     Event.on(EVENT_INIT_PUZZLES_VIEW, () => {
       this.initPuzzlesView();
       this.updatePuzzlesView();
+      Event.emit(EVENT_START_PUZZLE);
     });
 
     Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzlesView());
-    Event.on(EVENT_UPDATE_PUZZLES_VIEW_TO_COLOR, () => this.updatePuzzlesViewToColor());
+    Event.on(EVENT_PLAY_COLORIZE, () => this.playColorize());
+    Event.on(EVENT_PLAY_CLEAR_X, () => this.playClearX());
 
-    this.on("touchstart", (event) => {
+    this.on('touchstart', (event) => {
       const {x, y} = event.data.getLocalPosition(event.currentTarget)
 
       const {posX, posY} = this.getTouchPosition(x, y);
       this.touchStart(posX, posY);
     });
 
-    this.on("touchmove", (event) => {
+    this.on('touchmove', (event) => {
       const {x, y} = event.data.getLocalPosition(event.currentTarget);
 
       const {posX, posY} = this.getTouchPosition(x, y);
       this.touchStart(posX, posY);
     });
 
-    this.on("touchend", (event) => {
+    this.on('touchend', (event) => {
       const {x, y} = event.data.getLocalPosition(event.currentTarget);
 
       const {posX, posY} = this.getTouchPosition(x, y);
       this.touchEnd(posX, posY);
+    });
+
+    Event.on(EVENT_COMPLETE_PUZZLE, () => {
+      this.off('touchstart');
+      this.off('touchmove');
+      this.off('touchend');
     });
   }
 
@@ -107,11 +125,8 @@ export class PuzzlesView extends View {
     }
   }
 
-  updatePuzzlesViewToColor() {
-    console.log('updatePuzzlesViewToColor')
+  playColorize() {
     const origins = this.gameModel.origins;
-
-    console.log(origins)
 
     for (let i = 0; i < this.puzzleViews.length; i++) {
       for (let j = 0; j < this.puzzleViews[i].length; j++) {
@@ -133,6 +148,20 @@ export class PuzzlesView extends View {
       posX,
       posY,
     };
+  }
+
+  playClearX() {
+    const puzzle = this.gameModel.puzzle;
+
+    for (let i = 0; i < this.puzzleViews.length; i++) {
+      for (let j = 0; j < this.puzzleViews[i].length; j++) {
+        switch (puzzle[i][j]) {
+          case BLOCK_X:
+            this.puzzleViews[i][j].clearX();
+            break;
+        }
+      }
+    }
   }
 
   touchStart(posX, posY) {

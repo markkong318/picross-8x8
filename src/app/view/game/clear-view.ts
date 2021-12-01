@@ -5,7 +5,12 @@ import {View} from "../../../framework/view";
 import {PuzzlesView} from "./board/puzzles-view";
 import Bottle from "../../../framework/bottle";
 import Event from "../../../framework/event";
-import {EVENT_COMPLETE_PUZZLE, EVENT_UPDATE_PUZZLES_VIEW_TO_COLOR} from "../../env/event";
+import {
+  EVENT_COMPLETE_PUZZLE,
+  EVENT_PLAY_CLEAR, EVENT_PLAY_CLEAR_X,
+  EVENT_PLAY_RESULT,
+  EVENT_PLAY_COLORIZE
+} from "../../env/event";
 import {BoardView} from "./board-view";
 
 export class ClearView extends View {
@@ -25,16 +30,19 @@ export class ClearView extends View {
   }
 
   init() {
-    this.timeline = Bottle.get('timeline');
+    this.timeline = gsap.timeline();
     this.renderer = Bottle.get('renderer');
 
-    // this.drawClear();
-    // this.drawResult();
-
-    Event.on(EVENT_COMPLETE_PUZZLE, () => this.drawResult());
+    Event.on(EVENT_COMPLETE_PUZZLE, () =>
+      setTimeout(() => Event.emit(EVENT_PLAY_CLEAR), 1000)
+    );
+    Event.on(EVENT_PLAY_CLEAR, () => this.drawClear());
+    Event.on(EVENT_PLAY_RESULT, () => this.drawResult());
   }
 
   drawClear() {
+    this.timeline.clear().restart();
+
     const backgroundHeight = 150;
     const lineHeight = 6;
 
@@ -63,7 +71,7 @@ export class ClearView extends View {
       lineHeight,
     );
 
-    const texture = this.renderer.generateTexture(clearGraphics);
+    const texture = this.renderer.generateTexture(clearGraphics, PIXI.SCALE_MODES.LINEAR);
     this.clearSprite = new PIXI.Sprite(texture);
     this.clearSprite.anchor.x = 0.5;
     this.clearSprite.anchor.y = 0.5;
@@ -92,8 +100,6 @@ export class ClearView extends View {
           scaleX: this.clearText.scale.x * 2,
           scaleY: this.clearText.scale.y * 2,
         },
-        onComplete: function() {
-        },
       }, 0)
       .to(this.clearText, {
         duration: 0.5,
@@ -118,9 +124,25 @@ export class ClearView extends View {
           alpha: 0,
         },
       }, 1);
+
+    this.timeline
+      .to({}, {
+        onComplete: function () {
+          Event.emit(EVENT_PLAY_CLEAR_X);
+        },
+      }, 1);
+
+    this.timeline
+      .to({}, {
+        onComplete: function () {
+          Event.emit(EVENT_PLAY_RESULT)
+        },
+      }, 1.5);
   }
 
   drawResult() {
+    this.timeline.clear().restart();
+
     this.puzzlesView = Bottle.get('puzzlesView');
     this.puzzlesView.position = this.toLocal(this.puzzlesView.getGlobalPosition());
     this.addChild(this.puzzlesView);
@@ -142,8 +164,8 @@ export class ClearView extends View {
           x: (this.size.width - this.puzzlesView.width) / 2,
           y: (this.size.height - this.puzzlesView.height) / 2,
         },
-        onComplete: () => {
-          Event.emit(EVENT_UPDATE_PUZZLES_VIEW_TO_COLOR);
+        onComplete: function () {
+          Event.emit(EVENT_PLAY_COLORIZE);
         },
       }, 1);
 
@@ -187,7 +209,7 @@ export class ClearView extends View {
       fill: ['#ffffff'],
       fontSize: 22,
       letterSpacing: 10,
-      align : 'center',
+      align: 'center',
     });
 
     this.resultText.anchor.x = 0.5;

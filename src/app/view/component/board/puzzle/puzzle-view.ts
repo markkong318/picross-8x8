@@ -2,21 +2,19 @@ import * as PIXI from 'pixi.js';
 
 import {View} from '../../../../../framework/view';
 import {Size} from '../../../../../framework/size';
-import Event from '../../../../../framework/event';
-import {
-  EVENT_START_TOUCH_PUZZLE,
-} from '../../../../env/event';
 import Bottle from "../../../../../framework/bottle";
-import {GameModel} from "../../../../model/game-model";
+import {BLOCK_BLACK, BLOCK_WHITE, BLOCK_X} from "../../../../env/block";
+import gsap from "gsap";
 
 export class PuzzleView extends View {
   private graphics: PIXI.Graphics;
   private posX: number;
   private posY: number;
 
-  public size = new Size(32, 32);
+  private clearXTimeline: gsap.core.Timeline;
+  private colorizeTimeline: gsap.core.Timeline;
 
-  private gameModel: GameModel;
+  public size = new Size(32, 32);
 
   constructor(x: number, y: number) {
     super();
@@ -26,8 +24,6 @@ export class PuzzleView extends View {
   }
 
   public init() {
-    this.gameModel = Bottle.get('gameModel');
-
     this.graphics = new PIXI.Graphics();
 
     this.graphics.beginFill(0x323334);
@@ -36,6 +32,9 @@ export class PuzzleView extends View {
     this.graphics.interactive = true;
 
     this.addChild(this.graphics);
+
+    this.clearXTimeline = Bottle.get('clearXTimeline');
+    this.colorizeTimeline = Bottle.get('colorizeTimeline');
 
     this.interactive = true;
   }
@@ -73,8 +72,28 @@ export class PuzzleView extends View {
     this.graphics.lineStyle();
   }
 
+  clearX() {
+    this.clearXTimeline.to({},
+      {
+        duration: 1,
+        onUpdate: function(graphics, width, height) {
+          graphics.beginFill(0xffffff, this.ratio);
+          graphics.drawRoundedRect(1, 1, width - 2, height - 2, 5);
+        },
+        onUpdateParams: [this.graphics, this.size.width, this.size.height],
+      }, 0);
+  }
+
   drawColor(color) {
-    this.graphics.beginFill(color);
-    this.graphics.drawRoundedRect(1, 1, this.size.width - 2, this.size.height - 2, 5);
+    this.colorizeTimeline.to({},
+      {
+        duration: 1,
+        onUpdate: function(graphics, width, height, toColor) {
+          graphics.beginFill(toColor, this.ratio);
+          graphics.drawRoundedRect(1, 1, width - 2, height - 2, 5);
+        },
+        onUpdateParams: [this.graphics, this.size.width, this.size.height, color],
+      }, 0);
+
   }
 }
