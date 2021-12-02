@@ -1,4 +1,4 @@
-# Ping Pong
+# PICROSS 8x8
 
 Game which is forked from `parcel-pixijs-quickstarter` and apply MVC
 
@@ -10,7 +10,7 @@ Game which is forked from `parcel-pixijs-quickstarter` and apply MVC
 git clone https://github.com/markkong318/ping-pong.git
 
 # go to the repo
-cd ping-pong
+cd picross
 
 # install the dependencies via npm
 npm install

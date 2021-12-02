@@ -28,7 +28,7 @@ font.load()
       height: window.innerHeight,
       resizeTo: window,
       antialias: true,
-      resolution: 1.5,
+      resolution: 2,
       // autoDensity: true,
       autoResize: true
     });

@@ -11,7 +11,7 @@ import {
   EVENT_INIT_PUZZLES_VIEW, EVENT_PLAY_CLEAR_X,
   EVENT_START_TOUCH_PUZZLE,
   EVENT_UPDATE_PUZZLE_VIEW,
-  EVENT_PLAY_COLORIZE, EVENT_COMPLETE_PUZZLE, EVENT_START_PUZZLE
+  EVENT_PLAY_COLORIZE, EVENT_COMPLETE_PUZZLE, EVENT_START_PUZZLE, EVENT_PLAY_FULL_COLORIZE
 } from "../../../env/event";
 import Bottle from "../../../../framework/bottle";
 import {PUZZLE_HEIGHT, PUZZLE_WIDTH} from "../../../env/puzzle";
@@ -26,6 +26,7 @@ export class PuzzlesView extends View {
 
   private clearXTimeline: gsap.core.Timeline;
   private colorizeTimeline: gsap.core.Timeline;
+  private fullColorizeTimeline: gsap.core.Timeline;
 
   constructor() {
     super();
@@ -40,6 +41,9 @@ export class PuzzlesView extends View {
     this.colorizeTimeline = gsap.timeline();
     Bottle.set('colorizeTimeline', this.colorizeTimeline);
 
+    this.fullColorizeTimeline = gsap.timeline();
+    Bottle.set('fullColorizeTimeline', this.fullColorizeTimeline);
+
     Event.on(EVENT_INIT_PUZZLES_VIEW, () => {
       this.initPuzzlesView();
       this.updatePuzzlesView();
@@ -48,6 +52,7 @@ export class PuzzlesView extends View {
 
     Event.on(EVENT_UPDATE_PUZZLE_VIEW, () => this.updatePuzzlesView());
     Event.on(EVENT_PLAY_COLORIZE, () => this.playColorize());
+    Event.on(EVENT_PLAY_FULL_COLORIZE, () => this.playFullColorize());
     Event.on(EVENT_PLAY_CLEAR_X, () => this.playClearX());
 
     this.on('touchstart', (event) => {
@@ -131,6 +136,16 @@ export class PuzzlesView extends View {
     for (let i = 0; i < this.puzzleViews.length; i++) {
       for (let j = 0; j < this.puzzleViews[i].length; j++) {
         this.puzzleViews[i][j].drawColor(origins[i][j]);
+      }
+    }
+  }
+
+  playFullColorize() {
+    const origins = this.gameModel.origins;
+
+    for (let i = 0; i < this.puzzleViews.length; i++) {
+      for (let j = 0; j < this.puzzleViews[i].length; j++) {
+        this.puzzleViews[i][j].drawFullColor(origins[i][j]);
       }
     }
   }

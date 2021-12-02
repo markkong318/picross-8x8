@@ -1,10 +1,9 @@
 import * as PIXI from 'pixi.js';
+import gsap from "gsap";
 
 import {View} from '../../../../../framework/view';
 import {Size} from '../../../../../framework/size';
 import Bottle from "../../../../../framework/bottle";
-import {BLOCK_BLACK, BLOCK_WHITE, BLOCK_X} from "../../../../env/block";
-import gsap from "gsap";
 
 export class PuzzleView extends View {
   private graphics: PIXI.Graphics;
@@ -13,6 +12,7 @@ export class PuzzleView extends View {
 
   private clearXTimeline: gsap.core.Timeline;
   private colorizeTimeline: gsap.core.Timeline;
+  private fullColorizeTimeline: gsap.core.Timeline;
 
   public size = new Size(32, 32);
 
@@ -35,6 +35,7 @@ export class PuzzleView extends View {
 
     this.clearXTimeline = Bottle.get('clearXTimeline');
     this.colorizeTimeline = Bottle.get('colorizeTimeline');
+    this.fullColorizeTimeline = Bottle.get('fullColorizeTimeline');
 
     this.interactive = true;
   }
@@ -88,12 +89,23 @@ export class PuzzleView extends View {
     this.colorizeTimeline.to({},
       {
         duration: 1,
-        onUpdate: function(graphics, width, height, toColor) {
-          graphics.beginFill(toColor, this.ratio);
+        onUpdate: function(graphics, width, height, color) {
+          graphics.beginFill(color, this.ratio);
           graphics.drawRoundedRect(1, 1, width - 2, height - 2, 5);
         },
         onUpdateParams: [this.graphics, this.size.width, this.size.height, color],
       }, 0);
+  }
 
+  drawFullColor(color) {
+    this.fullColorizeTimeline.to({},
+      {
+        duration: 1,
+        onUpdate: function(graphics, width, height, color) {
+          graphics.beginFill(color, this.ratio);
+          graphics.drawRect(0, 0, width, height);
+        },
+        onUpdateParams: [this.graphics, this.size.width, this.size.height, color],
+      }, 0);
   }
 }

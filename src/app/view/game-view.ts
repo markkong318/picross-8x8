@@ -43,6 +43,9 @@ export class GameView extends View {
     this.clearView.init();
     this.addChild(this.clearView);
 
+    const url = new URL(window.location.href);
+    Bottle.set('searchParams', url.searchParams);
+
     Event.emit(EVENT_FETCH_ANSWER_IMAGE);
   }
 

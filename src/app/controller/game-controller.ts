@@ -70,8 +70,13 @@ export class GameController extends Controller {
   }
 
   initAnswer(next) {
+    const searchParams = Bottle.get('searchParams');
+    const answer = searchParams.get('answer') || 'rIiqSQs.png';
+
+    console.log(`answer: ${answer}`);
+
     loadImage(
-      "https://i.imgur.com/rIiqSQs.png",
+      `https://i.imgur.com/${answer}`,
       (canvas) => {
         console.log('init answer')
         console.log(canvas);
@@ -106,8 +111,13 @@ export class GameController extends Controller {
   }
 
   initOrigin(next) {
+    const searchParams = Bottle.get('searchParams');
+    const origin = searchParams.get('origin') || 'jjVYPNF.jpg';
+
+    console.log(`answer: ${origin}`);
+
     loadImage(
-      "https://i.imgur.com/jjVYPNF.jpg",
+      `https://i.imgur.com/${origin}`,
       (canvas) => {
         console.log('initOrigin')
         console.log(canvas);

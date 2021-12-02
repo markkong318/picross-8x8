@@ -9,7 +9,7 @@ import {
   EVENT_COMPLETE_PUZZLE,
   EVENT_PLAY_CLEAR, EVENT_PLAY_CLEAR_X,
   EVENT_PLAY_RESULT,
-  EVENT_PLAY_COLORIZE, EVENT_PLAY_CLEAN_BACKGROUND
+  EVENT_PLAY_COLORIZE, EVENT_PLAY_CLEAN_BACKGROUND, EVENT_PLAY_FULL_COLORIZE
 } from "../../env/event";
 import {BoardView} from "./board-view";
 import {GameModel} from "../../model/game-model";
@@ -172,7 +172,7 @@ export class ClearView extends View {
           x: (this.size.width - this.puzzlesView.width) / 2,
           y: (this.size.height - this.puzzlesView.height) / 2,
         },
-        onComplete: function () {
+        onComplete: function() {
           Event.emit(EVENT_PLAY_COLORIZE);
         },
       }, 1);
@@ -184,9 +184,11 @@ export class ClearView extends View {
           x: (this.size.width - this.puzzlesView.width) / 2,
           y: (this.size.height - this.puzzlesView.height) / 2 - 100,
         },
+        onComplete: function() {
+          Event.emit(EVENT_PLAY_FULL_COLORIZE);
+        }
       }, 3);
 
-    // draw bar
     const resultGraphics = new PIXI.Graphics();
     resultGraphics.beginFill(0x000000);
     resultGraphics.drawRect(
@@ -219,7 +221,10 @@ export class ClearView extends View {
 
     const timeText = `${('00' + hour).slice(-2)}:${('00' + min).slice(-2)}:${('00' + sec).slice(-2)}`
 
-    this.resultText = new PIXI.Text(`${timeText}\nWarrior`, {
+    const searchParams = Bottle.get('searchParams');
+    const title = searchParams.get('title') || 'Warrior';
+
+    this.resultText = new PIXI.Text(`${timeText}\n${title}`, {
       fontFamily: 'lato',
       fill: ['#ffffff'],
       fontSize: 22,
