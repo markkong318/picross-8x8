@@ -8,11 +8,12 @@ import Event from "../../framework/event";
 import {ClearView} from "./game/clear-view";
 import {Size} from "../../framework/size";
 import Bottle from "../../framework/bottle";
+import {BackView} from "./game/back-view";
 
 export class GameView extends View {
+  private backView: BackView;
   private boardView: BoardView;
   private clearView: ClearView;
-
 
   constructor() {
     super();
@@ -26,6 +27,11 @@ export class GameView extends View {
     bg.height = this.size.height;
     bg.tint = 0x333333;
     this.addChild(bg);
+
+    this.backView = new BackView();
+    this.backView.size = new Size(this.size.width, this.size.height);
+    this.backView.init();
+    this.addChild(this.backView);
 
     this.boardView = new BoardView();
     this.boardView.init();

@@ -12,6 +12,8 @@ export class HintRowView extends View {
   public size = new Size(150, 32);
   private radius: number = 10;
 
+  private puzzleOffset: number = 10;
+
   constructor() {
     super();
   }
@@ -23,17 +25,17 @@ export class HintRowView extends View {
 
   drawOdd() {
     this.graphics.beginFill(0xffffff);
-    this.graphics.drawRoundedRect(0, 0, this.size.width + this.radius, this.size.height, this.radius);
+    this.graphics.drawRoundedRect(0, 0, this.size.width + this.radius + this.puzzleOffset, this.size.height, this.radius);
   }
 
   drawEven() {
     this.graphics.beginFill(0xf1f2f3);
-    this.graphics.drawRoundedRect(0, 0, this.size.width + this.radius, this.size.height, this.radius);
+    this.graphics.drawRoundedRect(0, 0, this.size.width + this.radius + this.puzzleOffset, this.size.height, this.radius);
   }
 
   drawSelect() {
     this.graphics.beginFill(0x45d4ff);
-    this.graphics.drawRoundedRect(0, 0, this.size.width + this.radius, this.size.height, this.radius);
+    this.graphics.drawRoundedRect(0, 0, this.size.width + this.radius + this.puzzleOffset, this.size.height, this.radius);
   }
 
   drawHints(hits: number[]) {

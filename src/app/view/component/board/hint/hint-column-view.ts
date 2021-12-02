@@ -12,7 +12,7 @@ export class HintColumnView extends View {
   public size = new Size(32, 150);
   private radius: number = 10;
 
-  private text: PIXI.Text;
+  private puzzleOffset: number = 10;
 
   constructor() {
     super();
@@ -25,17 +25,17 @@ export class HintColumnView extends View {
 
   drawOdd() {
     this.graphics.beginFill(0xffffff);
-    this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
+    this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius + this.puzzleOffset, this.radius);
   }
 
   drawEven() {
     this.graphics.beginFill(0xf1f2f3);
-    this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
+    this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius + this.puzzleOffset, this.radius);
   }
 
   drawSelect() {
     this.graphics.beginFill(0x45d4ff);
-    this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius, this.radius);
+    this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height + this.radius + this.puzzleOffset, this.radius);
   }
 
   drawHints(hits: number[]) {

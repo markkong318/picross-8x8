@@ -38,7 +38,7 @@ export class GameApplication extends Application {
     this.gameController = new GameController();
 
     this.gameView = new GameView();
-    this.gameView.size = new Size(480, 800);
+    this.gameView.size = new Size(480, 900);
     this.gameView.init();
 
     this.stage.addChild(this.gameView);

@@ -22,7 +22,8 @@ export class BoardView extends View {
 
   private gameModel: GameModel;
 
-  private padding: number = 5;
+  private borderPadding: number = 5;
+  private puzzleOffset: number = 10;
 
   constructor() {
     super();
@@ -57,27 +58,27 @@ export class BoardView extends View {
       this.backgroundGraphics.drawRoundedRect(
         0,
         0,
-        this.hintRowsView.width + this.hintColumnsView.width + this.padding * 2,
-        this.hintColumnsView.height + this.hintRowsView.height + this.padding * 2,
+        this.hintRowsView.width + this.hintColumnsView.width + this.borderPadding * 2,
+        this.hintColumnsView.height + this.hintRowsView.height + this.borderPadding * 2,
         8
       );
 
       this.puzzlesView.position = new PIXI.Point(
-        this.padding + this.hintRowsView.width,
-        this.padding + this.hintColumnsView.height
+        this.borderPadding + this.hintRowsView.width - this.puzzleOffset,
+        this.borderPadding + this.hintColumnsView.height - this.puzzleOffset
       );
 
       this.hintColumnsView.position = new PIXI.Point(
-        this.padding + this.hintRowsView.width,
-        this.padding
+        this.borderPadding + this.hintRowsView.width - this.puzzleOffset,
+        this.borderPadding
       );
 
       this.hintRowsView.position = new PIXI.Point(
-        this.padding,
-        this.padding + this.hintColumnsView.height
+        this.borderPadding,
+        this.borderPadding + this.hintColumnsView.height - this.puzzleOffset
       );
 
-      this.infoView.position = new PIXI.Point(this.padding, this.padding);
+      this.infoView.position = new PIXI.Point(this.borderPadding, this.borderPadding);
 
       Event.emit(EVENT_INIT_PUZZLES_VIEW);
       Event.emit(EVENT_UPDATE_BOARD_VIEW_POSITION);

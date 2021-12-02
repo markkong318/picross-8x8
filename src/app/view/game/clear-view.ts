@@ -12,6 +12,7 @@ import {
   EVENT_PLAY_COLORIZE
 } from "../../env/event";
 import {BoardView} from "./board-view";
+import {GameModel} from "../../model/game-model";
 
 export class ClearView extends View {
   private clearSprite: PIXI.Sprite;
@@ -19,6 +20,9 @@ export class ClearView extends View {
 
   private resultSprite: PIXI.Sprite;
   private resultText: PIXI.Text;
+
+  private gameModel: GameModel;
+
   private puzzlesView: PuzzlesView;
   private boardView: BoardView;
 
@@ -32,6 +36,7 @@ export class ClearView extends View {
   init() {
     this.timeline = gsap.timeline();
     this.renderer = Bottle.get('renderer');
+    this.gameModel = Bottle.get('gameModel');
 
     Event.on(EVENT_COMPLETE_PUZZLE, () =>
       setTimeout(() => Event.emit(EVENT_PLAY_CLEAR), 1000)
@@ -204,7 +209,14 @@ export class ClearView extends View {
         },
       }, 4);
 
-    this.resultText = new PIXI.Text('00:00:00\nWarrior', {
+    const timer = this.gameModel.timer;
+    const hour = Math.floor(timer / (60 * 60));
+    const min = Math.floor(timer % (60 * 60) / 60);
+    const sec = timer % 60;
+
+    const timeText = `${('00' + hour).slice(-2)}:${('00' + min).slice(-2)}:${('00' + sec).slice(-2)}`
+
+    this.resultText = new PIXI.Text(`${timeText}\nWarrior`, {
       fontFamily: 'lato',
       fill: ['#ffffff'],
       fontSize: 22,

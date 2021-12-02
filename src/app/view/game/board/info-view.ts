@@ -53,14 +53,13 @@ export class InfoView extends View {
     this.timerText.anchor.x = 0.5;
     this.timerText.anchor.y = 0.5;
     this.timerText.x = this.width / 2;
-    this.timerText.y = 70;
+    this.timerText.y = 80;
     this.addChild(this.timerText);
 
     Event.on(EVENT_UPDATE_TIMER, () => this.updateTimer());
   }
 
   updateTimer() {
-    console.log(this.gameModel.timer);
     const timer = this.gameModel.timer;
     const hour = Math.floor(timer / (60 * 60));
     const min = Math.floor(timer % (60 * 60) / 60);
