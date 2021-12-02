@@ -9,7 +9,7 @@ import {
   EVENT_COMPLETE_PUZZLE,
   EVENT_PLAY_CLEAR, EVENT_PLAY_CLEAR_X,
   EVENT_PLAY_RESULT,
-  EVENT_PLAY_COLORIZE
+  EVENT_PLAY_COLORIZE, EVENT_PLAY_CLEAN_BACKGROUND
 } from "../../env/event";
 import {BoardView} from "./board-view";
 import {GameModel} from "../../model/game-model";
@@ -39,7 +39,10 @@ export class ClearView extends View {
     this.gameModel = Bottle.get('gameModel');
 
     Event.on(EVENT_COMPLETE_PUZZLE, () =>
-      setTimeout(() => Event.emit(EVENT_PLAY_CLEAR), 1000)
+      setTimeout(() => {
+        Event.emit(EVENT_PLAY_CLEAR);
+        Event.emit(EVENT_PLAY_CLEAN_BACKGROUND);
+      }, 1000)
     );
     Event.on(EVENT_PLAY_CLEAR, () => this.drawClear());
     Event.on(EVENT_PLAY_RESULT, () => this.drawResult());
