@@ -5,7 +5,7 @@ import {View} from "../../framework/view";
 import {BoardView} from "./game/board-view";
 import {EVENT_FETCH_ANSWER_IMAGE, EVENT_UPDATE_BOARD_VIEW_POSITION} from "../env/event";
 import Event from "../../framework/event";
-import {ClearView} from "./game/clear-view";
+import {DialogView} from "./game/dialog-view";
 import {Size} from "../../framework/size";
 import Bottle from "../../framework/bottle";
 import {BackView} from "./game/back-view";
@@ -13,7 +13,7 @@ import {BackView} from "./game/back-view";
 export class GameView extends View {
   private backView: BackView;
   private boardView: BoardView;
-  private clearView: ClearView;
+  private clearView: DialogView;
 
   constructor() {
     super();
@@ -38,7 +38,7 @@ export class GameView extends View {
     this.addChild(this.boardView);
     Bottle.set('boardView', this.boardView);
 
-    this.clearView = new ClearView();
+    this.clearView = new DialogView();
     this.clearView.size = new Size(this.size.width, this.size.height);
     this.clearView.init();
     this.addChild(this.clearView);

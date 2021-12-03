@@ -7,14 +7,22 @@ import Bottle from "../../../framework/bottle";
 import Event from "../../../framework/event";
 import {
   EVENT_COMPLETE_PUZZLE,
-  EVENT_PLAY_CLEAR, EVENT_PLAY_CLEAR_X,
+  EVENT_PLAY_CLEAR,
+  EVENT_PLAY_CLEAR_X,
   EVENT_PLAY_RESULT,
-  EVENT_PLAY_COLORIZE, EVENT_PLAY_CLEAN_BACKGROUND, EVENT_PLAY_FULL_COLORIZE
+  EVENT_PLAY_COLORIZE,
+  EVENT_PLAY_CLEAN_BACKGROUND,
+  EVENT_PLAY_FULL_COLORIZE,
+  EVENT_REMOVE_TOUCH_EVENT,
+  EVENT_INIT_TOUCH_EVENT, EVENT_STOP_TIMER, EVENT_START_PUZZLE, EVENT_PLAY_START, EVENT_START_TIMER
 } from "../../env/event";
 import {BoardView} from "./board-view";
 import {GameModel} from "../../model/game-model";
 
-export class ClearView extends View {
+export class DialogView extends View {
+  private startSprite: PIXI.Sprite;
+  private startText: PIXI.Text;
+
   private clearSprite: PIXI.Sprite;
   private clearText: PIXI.Text;
 
@@ -38,14 +46,118 @@ export class ClearView extends View {
     this.renderer = Bottle.get('renderer');
     this.gameModel = Bottle.get('gameModel');
 
-    Event.on(EVENT_COMPLETE_PUZZLE, () =>
+    Event.on(EVENT_START_PUZZLE, () => {
       setTimeout(() => {
+        Event.emit(EVENT_PLAY_START);
+      }, 1000);
+    });
+
+    Event.on(EVENT_COMPLETE_PUZZLE, () => {
+      Event.emit(EVENT_STOP_TIMER);
+
+      setTimeout(() => {
+        Event.emit(EVENT_REMOVE_TOUCH_EVENT);
         Event.emit(EVENT_PLAY_CLEAR);
         Event.emit(EVENT_PLAY_CLEAN_BACKGROUND);
-      }, 1000)
-    );
+      }, 1000);
+    });
+    Event.on(EVENT_PLAY_START, () => this.drawStart());
     Event.on(EVENT_PLAY_CLEAR, () => this.drawClear());
     Event.on(EVENT_PLAY_RESULT, () => this.drawResult());
+  }
+
+  drawStart() {
+    this.timeline.clear().restart();
+
+    const backgroundHeight = 150;
+    const lineHeight = 6;
+
+    const startGraphics = new PIXI.Graphics();
+
+    startGraphics.beginFill(0x000000);
+    startGraphics.drawRect(
+      0,
+      (this.size.height - backgroundHeight) / 2,
+      this.size.width,
+      backgroundHeight,
+    );
+
+    startGraphics.beginFill(0x666666);
+    startGraphics.drawRect(
+      0,
+      (this.size.height - backgroundHeight) / 2 + 10,
+      this.size.width,
+      lineHeight,
+    );
+
+    startGraphics.drawRect(
+      0,
+      (this.size.height + backgroundHeight) / 2 - 10 - lineHeight,
+      this.size.width,
+      lineHeight,
+    );
+
+    const texture = this.renderer.generateTexture(startGraphics, PIXI.SCALE_MODES.LINEAR);
+    this.startSprite = new PIXI.Sprite(texture);
+    this.startSprite.anchor.x = 0.5;
+    this.startSprite.anchor.y = 0.5;
+    this.startSprite.x = this.size.width / 2;
+    this.startSprite.y = this.size.height / 2;
+    this.addChild(this.startSprite);
+
+    this.startText = new PIXI.Text('START', {
+      fontFamily: 'lato',
+      fill: ['#ffffff'],
+      fontSize: 30,
+      letterSpacing: 50,
+    });
+
+    this.startText.anchor.x = 0.5;
+    this.startText.anchor.y = 0.5;
+    this.startText.x = this.size.width / 2;
+    this.startText.y = this.size.height / 2;
+    this.addChild(this.startText)
+
+    this.timeline
+      .from(this.startText, {
+        duration: 0.7,
+        ease: 'back.out(1.7)',
+        pixi: {
+          scaleX: this.startText.scale.x * 2,
+          scaleY: this.startText.scale.y * 2,
+        },
+      }, 0)
+      .to(this.startText, {
+        duration: 0.5,
+        pixi: {
+          scaleY: 0,
+          alpha: 0,
+        },
+      }, 1);
+
+    this.timeline
+      .from(this.startSprite, {
+        duration: 0.7,
+        pixi: {
+          scaleX: this.startSprite.scale.x * 2,
+          scaleY: this.startSprite.scale.y * 2,
+        },
+      }, 0)
+      .to(this.startSprite, {
+        duration: 0.5,
+        pixi: {
+          scaleY: 0,
+          alpha: 0,
+        },
+      }, 1);
+
+    this.timeline
+      .to({}, {
+        onComplete: function () {
+          Event.emit(EVENT_INIT_TOUCH_EVENT);
+          Event.emit(EVENT_START_TIMER);
+        },
+      }, 1);
   }
 
   drawClear() {
@@ -172,7 +284,7 @@ export class ClearView extends View {
           x: (this.size.width - this.puzzlesView.width) / 2,
           y: (this.size.height - this.puzzlesView.height) / 2,
         },
-        onComplete: function() {
+        onComplete: function () {
           Event.emit(EVENT_PLAY_COLORIZE);
         },
       }, 1);
@@ -184,7 +296,7 @@ export class ClearView extends View {
           x: (this.size.width - this.puzzlesView.width) / 2,
           y: (this.size.height - this.puzzlesView.height) / 2 - 100,
         },
-        onComplete: function() {
+        onComplete: function () {
           Event.emit(EVENT_PLAY_FULL_COLORIZE);
         }
       }, 3);

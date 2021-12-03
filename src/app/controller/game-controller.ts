@@ -16,7 +16,12 @@ import {
   EVENT_INIT_DATA,
   EVENT_INIT_BOARD_VIEW,
   EVENT_COMPLETE_PUZZLE,
-  EVENT_FETCH_ORIGIN_IMAGE, EVENT_END_TOUCH_PUZZLE, EVENT_START_PUZZLE, EVENT_UPDATE_TIMER,
+  EVENT_FETCH_ORIGIN_IMAGE,
+  EVENT_END_TOUCH_PUZZLE,
+  EVENT_START_PUZZLE,
+  EVENT_UPDATE_TIMER,
+  EVENT_START_TIMER,
+  EVENT_STOP_TIMER,
 } from "../env/event";
 export class GameController extends Controller {
   private gameModel: GameModel;
@@ -42,7 +47,7 @@ export class GameController extends Controller {
       Event.emit(EVENT_UPDATE_PUZZLE_VIEW);
       Event.emit(EVENT_UPDATE_HINT_VIEW, x, y);
 
-      if (!this.isCompleted()) {
+      if (this.isCompleted()) {
         console.log('completed');
         Event.emit(EVENT_COMPLETE_PUZZLE);
       }
@@ -65,8 +70,8 @@ export class GameController extends Controller {
       Event.emit(EVENT_INIT_BOARD_VIEW);
     });
 
-    Event.on(EVENT_START_PUZZLE, () => this.startTimer());
-    Event.on(EVENT_COMPLETE_PUZZLE, () => this.stopTimer());
+    Event.on(EVENT_START_TIMER, () => this.startTimer());
+    Event.on(EVENT_STOP_TIMER, () => this.stopTimer());
   }
 
   initAnswer(next) {

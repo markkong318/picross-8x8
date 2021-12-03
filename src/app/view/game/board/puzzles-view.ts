@@ -8,10 +8,16 @@ import {GameModel} from "../../../model/game-model";
 import Event from "../../../../framework/event";
 import {
   EVENT_END_TOUCH_PUZZLE,
-  EVENT_INIT_PUZZLES_VIEW, EVENT_PLAY_CLEAR_X,
+  EVENT_INIT_PUZZLES_VIEW,
+  EVENT_PLAY_CLEAR_X,
   EVENT_START_TOUCH_PUZZLE,
   EVENT_UPDATE_PUZZLE_VIEW,
-  EVENT_PLAY_COLORIZE, EVENT_COMPLETE_PUZZLE, EVENT_START_PUZZLE, EVENT_PLAY_FULL_COLORIZE
+  EVENT_PLAY_COLORIZE,
+  EVENT_COMPLETE_PUZZLE,
+  EVENT_START_PUZZLE,
+  EVENT_PLAY_FULL_COLORIZE,
+  EVENT_REMOVE_TOUCH_EVENT,
+  EVENT_INIT_TOUCH_EVENT
 } from "../../../env/event";
 import Bottle from "../../../../framework/bottle";
 import {PUZZLE_HEIGHT, PUZZLE_WIDTH} from "../../../env/puzzle";
@@ -27,6 +33,8 @@ export class PuzzlesView extends View {
   private clearXTimeline: gsap.core.Timeline;
   private colorizeTimeline: gsap.core.Timeline;
   private fullColorizeTimeline: gsap.core.Timeline;
+
+  private isTouched: boolean = false;
 
   constructor() {
     super();
@@ -55,32 +63,45 @@ export class PuzzlesView extends View {
     Event.on(EVENT_PLAY_FULL_COLORIZE, () => this.playFullColorize());
     Event.on(EVENT_PLAY_CLEAR_X, () => this.playClearX());
 
-    this.on('touchstart', (event) => {
+    Event.on(EVENT_INIT_TOUCH_EVENT, () => this.initTouchEvent());
+    Event.on(EVENT_REMOVE_TOUCH_EVENT, () => this.removeTouchEvent());
+  }
+
+  initTouchEvent() {
+    this.on('pointerdown', (event) => {
+      this.isTouched = true;
+
       const {x, y} = event.data.getLocalPosition(event.currentTarget)
 
       const {posX, posY} = this.getTouchPosition(x, y);
       this.touchStart(posX, posY);
     });
 
-    this.on('touchmove', (event) => {
+    this.on('pointermove', (event) => {
+      if (!this.isTouched) {
+        return;
+      }
+
       const {x, y} = event.data.getLocalPosition(event.currentTarget);
 
       const {posX, posY} = this.getTouchPosition(x, y);
       this.touchStart(posX, posY);
     });
 
-    this.on('touchend', (event) => {
+    this.on('pointerup', (event) => {
       const {x, y} = event.data.getLocalPosition(event.currentTarget);
 
       const {posX, posY} = this.getTouchPosition(x, y);
       this.touchEnd(posX, posY);
-    });
 
-    Event.on(EVENT_COMPLETE_PUZZLE, () => {
-      this.off('touchstart');
-      this.off('touchmove');
-      this.off('touchend');
+      this.isTouched = false;
     });
+  }
+
+  removeTouchEvent() {
+    this.off('pointerstart');
+    this.off('pointermove');
+    this.off('pointerend');
   }
 
   initPuzzlesView() {
