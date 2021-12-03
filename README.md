@@ -7,7 +7,7 @@ Game which is forked from `parcel-pixijs-quickstarter` and apply MVC
 
 ```bash
 # clone the repo.
-git clone https://github.com/markkong318/ping-pong.git
+git git@github.com:markkong318/picross-8x8.git
 
 # go to the repo
 cd picross
@@ -20,7 +20,7 @@ npm run start
 ```
 go to [http://localhost:1234](http://localhost:1234) in your browser. Done.
 
-DEMO: [https://markkong318.github.io/ping-pong/](https://markkong318.github.io/ping-pong/)
+DEMO: [https://markkong318.github.io/picross-8x8/](https://markkong318.github.io/picross-8x8/)
 
 ### npm scripts
 
@@ -30,6 +30,33 @@ DEMO: [https://markkong318.github.io/ping-pong/](https://markkong318.github.io/p
 * `npm run test` - runs the unit tests (.spec.ts files).
 * `npm run deploy` - deploy to github page
 
-# Asset
-[froots-and-veggies-culinary-pixels](https://zrghr.itch.io/froots-and-veggies-culinary-pixels)
-[Pong Score](https://fontstruct.com/fontstructions/show/1158273)
+## Build your own puzzle
+
+### Prepare
+
+Prepare two 8x8 jpg files (png has alpha channel problem, not suggested)
+
+1. Origin image: Normal color image
+2. Answer image: Mark the black block as black (0x000000) and others as white (0xffffff)
+
+Upload to imgur with directly download link
+
+### Upload
+
+The link format should be
+
+```
+https://i.imgur.com/jjVYPNF.jpg
+```
+
+### Create link
+
+Append the text after `https://i.imgur.com/` as parameter
+
+- origin: origin image
+- answer: answer image
+- title: the text in the clear screen
+
+```
+https://markkong318.github.io/picross-8x8/?origin=jjVYPNF.jpg&answer=jjVYPNF.jpg&title=WARRIOR
+```
