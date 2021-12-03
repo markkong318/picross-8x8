@@ -74,6 +74,11 @@ export class PuzzlesView extends View {
       const {x, y} = event.data.getLocalPosition(event.currentTarget)
 
       const {posX, posY} = this.getTouchPosition(x, y);
+
+      if (posX === undefined || posY === undefined) {
+        return;
+      }
+
       this.touchStart(posX, posY);
     });
 
@@ -85,6 +90,11 @@ export class PuzzlesView extends View {
       const {x, y} = event.data.getLocalPosition(event.currentTarget);
 
       const {posX, posY} = this.getTouchPosition(x, y);
+
+      if (posX === undefined || posY === undefined) {
+        return;
+      }
+
       this.touchStart(posX, posY);
     });
 
@@ -92,6 +102,11 @@ export class PuzzlesView extends View {
       const {x, y} = event.data.getLocalPosition(event.currentTarget);
 
       const {posX, posY} = this.getTouchPosition(x, y);
+
+      if (posX === undefined || posY === undefined) {
+        return;
+      }
+
       this.touchEnd(posX, posY);
 
       this.isTouched = false;
@@ -176,8 +191,8 @@ export class PuzzlesView extends View {
     const posY = Math.floor(y / PUZZLE_HEIGHT);
 
     if (posX < 0 || posX > 8 || posY < 0 || posY > 8) {
-      console.log('failed')
-      return;
+      console.log('touch not on puzzle')
+      return {};
     }
 
     return {

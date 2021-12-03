@@ -76,7 +76,7 @@ export class GameController extends Controller {
 
   initAnswer(next) {
     const searchParams = Bottle.get('searchParams');
-    const answer = searchParams.get('answer') || 'rIiqSQs.png';
+    const answer = searchParams.get('answer') || 'jjVYPNF.jpg';
 
     console.log(`answer: ${answer}`);
 
@@ -100,7 +100,10 @@ export class GameController extends Controller {
                 data[(i * answers[i].length + j) * 4] +
                 data[(i * answers[i].length + j) * 4 + 1] +
                 data[(i * answers[i].length + j) * 4 + 2]
-              ) / 3 > 128 ? BLOCK_BLACK : BLOCK_WHITE;
+              ) / 3 < 128 ? BLOCK_BLACK : BLOCK_WHITE;
+
+            console.log(`ans (${i}, ${j}) => rgb(${data[(i * answers[i].length + j) * 4]}, ${data[(i * answers[i].length + j) * 4 + 1]}, ${data[(i * answers[i].length + j) * 4 + 2]}) alpha: ${data[(i * answers[i].length + j) * 4 + 3]}`)
+
           }
         }
 
