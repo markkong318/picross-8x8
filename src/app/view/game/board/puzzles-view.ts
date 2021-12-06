@@ -114,9 +114,9 @@ export class PuzzlesView extends View {
   }
 
   removeTouchEvent() {
-    this.off('pointerstart');
+    this.off('pointerdown');
     this.off('pointermove');
-    this.off('pointerend');
+    this.off('pointerup');
   }
 
   initPuzzlesView() {

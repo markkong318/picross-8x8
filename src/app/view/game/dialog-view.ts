@@ -54,9 +54,9 @@ export class DialogView extends View {
 
     Event.on(EVENT_COMPLETE_PUZZLE, () => {
       Event.emit(EVENT_STOP_TIMER);
+      Event.emit(EVENT_REMOVE_TOUCH_EVENT);
 
       setTimeout(() => {
-        Event.emit(EVENT_REMOVE_TOUCH_EVENT);
         Event.emit(EVENT_PLAY_CLEAR);
         Event.emit(EVENT_PLAY_CLEAN_BACKGROUND);
       }, 1000);
