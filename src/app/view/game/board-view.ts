@@ -1,16 +1,16 @@
 import * as PIXI from 'pixi.js';
 
-import {View} from "../../../framework/view";
+import {View} from '../../../framework/view';
 import Bottle from '../../../framework/bottle';
 import Event from '../../../framework/event';
 import {InfoView} from "./board/info-view";
 import {
   EVENT_INIT_BOARD_VIEW, EVENT_INIT_PUZZLES_VIEW, EVENT_UPDATE_BOARD_VIEW_POSITION,
-} from "../../env/event";
-import {GameModel} from "../../model/game-model";
-import {PuzzlesView} from "./board/puzzles-view";
-import {HintColumnsView} from "./board/hint-columns-view";
-import {HintRowsView} from "./board/hint-rows-view";
+} from '../../env/event';
+import {GameModel} from '../../model/game-model';
+import {PuzzlesView} from './board/puzzles-view';
+import {HintColumnsView} from './board/hint-columns-view';
+import {HintRowsView} from './board/hint-rows-view';
 
 export class BoardView extends View {
   private backgroundGraphics: PIXI.Graphics;

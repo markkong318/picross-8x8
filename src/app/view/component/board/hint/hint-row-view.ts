@@ -2,8 +2,7 @@ import * as PIXI from 'pixi.js';
 
 import {View} from '../../../../../framework/view';
 import {Size} from '../../../../../framework/size';
-import {HintView} from "./hint-view";
-import {Point} from "pixi.js";
+import {HintView} from './hint-view';
 
 export class HintRowView extends View {
   private graphics: PIXI.Graphics;
@@ -45,7 +44,7 @@ export class HintRowView extends View {
       const hintView = new HintView();
       hintView.init();
       hintView.setText(hits[i]);
-      hintView.position = new Point(
+      hintView.position = new PIXI.Point(
         this.size.width - hintView.size.width * (hits.length - i),
         (this.size.height - hintView.size.height) / 2,
       );

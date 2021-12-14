@@ -2,17 +2,17 @@ import * as PIXI from 'pixi.js';
 
 import {View} from '../../../../framework/view';
 import {Size} from '../../../../framework/size';
-import Event from "../../../../framework/event";
-import {EVENT_UPDATE_TIMER} from "../../../env/event";
-import {GameModel} from "../../../model/game-model";
-import Bottle from "../../../../framework/bottle";
+import Event from '../../../../framework/event';
+import {EVENT_UPDATE_TIMER} from '../../../env/event';
+import {GameModel} from '../../../model/game-model';
+import Bottle from '../../../../framework/bottle';
 
 export class InfoView extends View {
   private gameModel: GameModel;
 
   private graphics: PIXI.Graphics;
 
-  public size = new Size(150, 150 );
+  public size = new Size(150, 150);
   private titleText: PIXI.Text;
   private timerText: PIXI.Text;
 
@@ -30,7 +30,7 @@ export class InfoView extends View {
     this.graphics.drawRoundedRect(0, 0, this.size.width, this.size.height, 10);
 
     this.graphics.beginFill(0x000000);
-    this.graphics.drawRoundedRect(5, 5,135, 17, 10)
+    this.graphics.drawRoundedRect(5, 5, 135, 17, 10)
 
     this.titleText = new PIXI.Text('PICROSS', {
       fontFamily: 'lato',

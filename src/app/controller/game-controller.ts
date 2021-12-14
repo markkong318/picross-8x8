@@ -1,13 +1,14 @@
-import loadImage from "blueimp-load-image"
-import {Controller} from "../../framework/controller";
-import {GameModel} from "../model/game-model";
-import Bottle from "../../framework/bottle";
-import Event from "../../framework/event";
+import loadImage from 'blueimp-load-image';
+import {Controller} from '../../framework/controller';
+import {GameModel} from '../model/game-model';
+import Bottle from '../../framework/bottle';
+import Event from '../../framework/event';
+
 import {
   BLOCK_WHITE,
   BLOCK_BLACK,
   BLOCK_X,
-} from "../env/block";
+} from '../env/block';
 import {
   EVENT_START_TOUCH_PUZZLE,
   EVENT_UPDATE_PUZZLE_VIEW,
@@ -18,11 +19,11 @@ import {
   EVENT_COMPLETE_PUZZLE,
   EVENT_FETCH_ORIGIN_IMAGE,
   EVENT_END_TOUCH_PUZZLE,
-  EVENT_START_PUZZLE,
   EVENT_UPDATE_TIMER,
   EVENT_START_TIMER,
   EVENT_STOP_TIMER,
-} from "../env/event";
+} from '../env/event';
+
 export class GameController extends Controller {
   private gameModel: GameModel;
   private intervalId;
@@ -278,7 +279,7 @@ export class GameController extends Controller {
       this.clearXPuzzleRow(i);
     }
 
-    for(let i = 0; i < this.gameModel.puzzle.length; i++) {
+    for (let i = 0; i < this.gameModel.puzzle.length; i++) {
       this.clearXPuzzleColumn(i);
     }
   }
@@ -308,7 +309,7 @@ export class GameController extends Controller {
       this.updateXPuzzleRow(i);
     }
 
-    for(let i = 0; i < this.gameModel.puzzle[0].length; i++) {
+    for (let i = 0; i < this.gameModel.puzzle[0].length; i++) {
       this.updateXPuzzleColumn(i);
     }
   }
@@ -337,7 +338,7 @@ export class GameController extends Controller {
     }
 
     if (current.length !== hintRow.length
-      || ! current.every((value, index) => value === hintRow[index])) {
+      || !current.every((value, index) => value === hintRow[index])) {
       return;
     }
 
@@ -372,7 +373,7 @@ export class GameController extends Controller {
     }
 
     if (current.length !== hintColumn.length
-      || ! current.every((value, index) => value === hintColumn[index])) {
+      || !current.every((value, index) => value === hintColumn[index])) {
       return;
     }
 

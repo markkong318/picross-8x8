@@ -20,7 +20,7 @@ export class HintView extends View {
 
     this.addChild(this.graphics);
 
-    this.text = new PIXI.Text('0',{
+    this.text = new PIXI.Text('0', {
       fontFamily: 'lato',
       fill: ['#a6a6a6'],
       fontSize: 25,

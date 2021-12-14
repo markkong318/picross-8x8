@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
-import gsap from "gsap";
+import gsap from 'gsap';
 
-import {View} from "../../../framework/view";
-import {PuzzlesView} from "./board/puzzles-view";
-import Bottle from "../../../framework/bottle";
-import Event from "../../../framework/event";
+import {View} from '../../../framework/view';
+import {PuzzlesView} from './board/puzzles-view';
+import Bottle from '../../../framework/bottle';
+import Event from '../../../framework/event';
 import {
   EVENT_COMPLETE_PUZZLE,
   EVENT_PLAY_CLEAR,
@@ -15,9 +15,9 @@ import {
   EVENT_PLAY_FULL_COLORIZE,
   EVENT_REMOVE_TOUCH_EVENT,
   EVENT_INIT_TOUCH_EVENT, EVENT_STOP_TIMER, EVENT_START_PUZZLE, EVENT_PLAY_START, EVENT_START_TIMER
-} from "../../env/event";
-import {BoardView} from "./board-view";
-import {GameModel} from "../../model/game-model";
+} from '../../env/event';
+import {BoardView} from './board-view';
+import {GameModel} from '../../model/game-model';
 
 export class DialogView extends View {
   private startSprite: PIXI.Sprite;

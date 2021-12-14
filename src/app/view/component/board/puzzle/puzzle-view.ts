@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
-import gsap from "gsap";
+import gsap from 'gsap';
 
 import {View} from '../../../../../framework/view';
 import {Size} from '../../../../../framework/size';
-import Bottle from "../../../../../framework/bottle";
+import Bottle from '../../../../../framework/bottle';
 
 export class PuzzleView extends View {
   private graphics: PIXI.Graphics;
@@ -54,7 +54,7 @@ export class PuzzleView extends View {
     this.graphics.beginFill(0xffffff);
     this.graphics.drawRoundedRect(1, 1, this.size.width - 2, this.size.height - 2, 5);
 
-    const style= {
+    const style = {
       width: 4,
       color: 0xf68310,
       cap: 'round',
@@ -77,7 +77,7 @@ export class PuzzleView extends View {
     this.clearXTimeline.to({},
       {
         duration: 1,
-        onUpdate: function(graphics, width, height) {
+        onUpdate: function (graphics, width, height) {
           graphics.beginFill(0xffffff, this.ratio);
           graphics.drawRoundedRect(1, 1, width - 2, height - 2, 5);
         },
@@ -89,7 +89,7 @@ export class PuzzleView extends View {
     this.colorizeTimeline.to({},
       {
         duration: 1,
-        onUpdate: function(graphics, width, height, color) {
+        onUpdate: function (graphics, width, height, color) {
           graphics.beginFill(color, this.ratio);
           graphics.drawRoundedRect(1, 1, width - 2, height - 2, 5);
         },
@@ -101,7 +101,7 @@ export class PuzzleView extends View {
     this.fullColorizeTimeline.to({},
       {
         duration: 1,
-        onUpdate: function(graphics, width, height, color) {
+        onUpdate: function (graphics, width, height, color) {
           graphics.beginFill(color, this.ratio);
           graphics.drawRect(0, 0, width, height);
         },

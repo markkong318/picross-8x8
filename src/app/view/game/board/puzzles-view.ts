@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js';
-import gsap from "gsap";
+import gsap from 'gsap';
 
-import {View} from "../../../../framework/view";
-import {PuzzleView} from "../../component/board/puzzle/puzzle-view";
-import {BLOCK_BLACK, BLOCK_WHITE, BLOCK_X} from "../../../env/block";
-import {GameModel} from "../../../model/game-model";
-import Event from "../../../../framework/event";
+import {View} from '../../../../framework/view';
+import {PuzzleView} from '../../component/board/puzzle/puzzle-view';
+import {BLOCK_BLACK, BLOCK_WHITE, BLOCK_X} from '../../../env/block';
+import {GameModel} from '../../../model/game-model';
+import Event from '../../../../framework/event';
 import {
   EVENT_END_TOUCH_PUZZLE,
   EVENT_INIT_PUZZLES_VIEW,
@@ -13,14 +13,13 @@ import {
   EVENT_START_TOUCH_PUZZLE,
   EVENT_UPDATE_PUZZLE_VIEW,
   EVENT_PLAY_COLORIZE,
-  EVENT_COMPLETE_PUZZLE,
   EVENT_START_PUZZLE,
   EVENT_PLAY_FULL_COLORIZE,
   EVENT_REMOVE_TOUCH_EVENT,
   EVENT_INIT_TOUCH_EVENT
-} from "../../../env/event";
-import Bottle from "../../../../framework/bottle";
-import {PUZZLE_HEIGHT, PUZZLE_WIDTH} from "../../../env/puzzle";
+} from '../../../env/event';
+import Bottle from '../../../../framework/bottle';
+import {PUZZLE_HEIGHT, PUZZLE_WIDTH} from '../../../env/puzzle';
 
 export class PuzzlesView extends View {
   private puzzleViews: PuzzleView[][];

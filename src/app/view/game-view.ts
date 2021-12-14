@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import gsap from 'gsap';
 
 import {View} from "../../framework/view";
 import {BoardView} from "./game/board-view";

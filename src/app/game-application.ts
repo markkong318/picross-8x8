@@ -1,12 +1,9 @@
-import * as PIXI from 'pixi.js';
-
 import {GameView} from "./view/game-view";
 import {GameModel} from "./model/game-model";
 import {GameController} from "./controller/game-controller";
 import {Application} from "../framework/application"
 import {Size} from "../framework/size";
 import Bottle from "../framework/bottle";
-import gsap from "gsap";
 
 export class GameApplication extends Application {
   private gameModel: GameModel;

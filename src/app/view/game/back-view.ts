@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
-import gsap from "gsap";
+import gsap from 'gsap';
 
-import {View} from "../../../framework/view";
+import {View} from '../../../framework/view';
 import Bottle from '../../../framework/bottle';
-import Event from "../../../framework/event";
-import {EVENT_PLAY_CLEAN_BACKGROUND} from "../../env/event";
+import Event from '../../../framework/event';
+import {EVENT_PLAY_CLEAN_BACKGROUND} from '../../env/event';
 
 export class BackView extends View {
   private gradientSprite: PIXI.Sprite;
