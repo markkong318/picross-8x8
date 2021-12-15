@@ -10,7 +10,7 @@ Game which is forked from `parcel-pixijs-quickstarter` and apply MVC
 git git@github.com:markkong318/picross-8x8.git
 
 # go to the repo
-cd picross
+cd picross-8x8
 
 # install the dependencies via npm
 npm install
