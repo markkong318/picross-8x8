@@ -86,6 +86,10 @@ export class GameController extends Controller {
       (canvas) => {
         console.log('init answer')
         console.log(canvas);
+
+        this.gameModel.puzzleWidth = canvas.width;
+        this.gameModel.puzzleHeight = canvas.height;
+
         const context = canvas.getContext('2d');
         const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
 
@@ -164,8 +168,9 @@ export class GameController extends Controller {
 
   initHintRows() {
     const answer = this.gameModel.answer;
+    const puzzleHeight = this.gameModel.puzzleHeight;
 
-    const hintRows = new Array(8);
+    const hintRows = new Array(puzzleHeight);
     for (let i = 0; i < hintRows.length; i++) {
       hintRows[i] = [];
     }
@@ -194,8 +199,9 @@ export class GameController extends Controller {
 
   initHintColumns() {
     const answer = this.gameModel.answer;
+    const puzzleWidth = this.gameModel.puzzleWidth;
 
-    const hintColumns = new Array(8);
+    const hintColumns = new Array(puzzleWidth);
     for (let i = 0; i < hintColumns.length; i++) {
       hintColumns[i] = [];
     }
@@ -223,15 +229,18 @@ export class GameController extends Controller {
   }
 
   initPuzzles() {
-    const puzzles = new Array(8);
+    const puzzleWidth = this.gameModel.puzzleWidth;
+    const puzzleHeight = this.gameModel.puzzleHeight;
+
+    const puzzles = new Array(puzzleWidth);
     for (let i = 0; i < puzzles.length; i++) {
-      puzzles[i] = new Array(8);
+      puzzles[i] = new Array(puzzleHeight);
       for (let j = 0; j < puzzles[i].length; j++) {
         puzzles[i][j] = BLOCK_WHITE;
       }
     }
 
-    this.gameModel.puzzle = puzzles
+    this.gameModel.puzzle = puzzles;
   }
 
   isCompleted() {

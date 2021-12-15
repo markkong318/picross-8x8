@@ -19,7 +19,7 @@ import {
   EVENT_INIT_TOUCH_EVENT
 } from '../../../env/event';
 import Bottle from '../../../../framework/bottle';
-import {PUZZLE_HEIGHT, PUZZLE_WIDTH} from '../../../env/puzzle';
+import {BLOCK_HEIGHT, BLOCK_WIDTH} from '../../../env/block';
 
 export class PuzzlesView extends View {
   private puzzleViews: PuzzleView[][];
@@ -119,18 +119,21 @@ export class PuzzlesView extends View {
   }
 
   initPuzzlesView() {
+    const puzzleWidth = this.gameModel.puzzleWidth;
+    const puzzleHeight = this.gameModel.puzzleHeight;
+
     this.interactive = true;
 
     this.backgroundGraphics = new PIXI.Graphics();
     this.addChild(this.backgroundGraphics);
 
     this.backgroundGraphics.beginFill(0x656566);
-    this.backgroundGraphics.drawRoundedRect(-1, -1, PUZZLE_WIDTH * 8 + 2, PUZZLE_HEIGHT * 8 + 2, 5);
+    this.backgroundGraphics.drawRoundedRect(-1, -1, BLOCK_WIDTH * puzzleWidth + 2, BLOCK_HEIGHT * puzzleHeight + 2, 5);
 
-    this.puzzleViews = new Array(8);
+    this.puzzleViews = new Array(puzzleWidth);
 
     for (let i = 0; i < this.puzzleViews.length; i++) {
-      this.puzzleViews[i] = new Array(8);
+      this.puzzleViews[i] = new Array(puzzleHeight);
     }
 
     for (let i = 0; i < this.puzzleViews.length; i++) {
@@ -186,10 +189,13 @@ export class PuzzlesView extends View {
   }
 
   getTouchPosition(x: number, y: number) {
-    const posX = Math.floor(x / PUZZLE_WIDTH);
-    const posY = Math.floor(y / PUZZLE_HEIGHT);
+    const puzzleWidth = this.gameModel.puzzleWidth;
+    const puzzleHeight = this.gameModel.puzzleHeight;
 
-    if (posX < 0 || posX > 8 || posY < 0 || posY > 8) {
+    const posX = Math.floor(x / BLOCK_WIDTH);
+    const posY = Math.floor(y / BLOCK_HEIGHT);
+
+    if (posX < 0 || posX > puzzleWidth || posY < 0 || posY > puzzleHeight) {
       console.log('touch not on puzzle')
       return {};
     }

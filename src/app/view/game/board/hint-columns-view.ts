@@ -7,7 +7,7 @@ import {
   EVENT_UPDATE_HINT_VIEW,
 } from '../../../env/event';
 import Bottle from '../../../../framework/bottle';
-import {PUZZLE_WIDTH} from '../../../env/puzzle';
+import {BLOCK_WIDTH} from '../../../env/block';
 import {HintColumnView} from '../../component/board/hint/hint-column-view';
 
 export class HintColumnsView extends View {
@@ -23,9 +23,9 @@ export class HintColumnsView extends View {
 
     this.hintColumnViews = [];
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < this.gameModel.puzzleWidth; i++) {
       const hintColumnView = new HintColumnView();
-      hintColumnView.position = new PIXI.Point(i * PUZZLE_WIDTH, 0);
+      hintColumnView.position = new PIXI.Point(i * BLOCK_WIDTH, 0);
       hintColumnView.init();
 
       if (i % 2) {

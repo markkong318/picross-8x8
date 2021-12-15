@@ -3,12 +3,13 @@ import * as PIXI from 'pixi.js';
 import {View} from '../../../../../framework/view';
 import {Size} from '../../../../../framework/size';
 import {HintView} from './hint-view';
+import {BLOCK_HEIGHT} from '../../../../env/block';
 
 export class HintRowView extends View {
   private graphics: PIXI.Graphics;
   private hintViews: HintView[];
 
-  public size = new Size(150, 32);
+  public size = new Size(150, BLOCK_HEIGHT);
   private radius: number = 10;
 
   private puzzleOffset: number = 10;

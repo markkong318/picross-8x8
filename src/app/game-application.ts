@@ -34,13 +34,24 @@ export class GameApplication extends Application {
 
     this.gameController = new GameController();
 
+    const viewWidth = 480;
+    const viewHeight = this.getViewHeight(viewWidth);
+
     this.gameView = new GameView();
-    this.gameView.size = new Size(480, 900);
+    this.gameView.size = new Size(viewWidth, viewHeight);
     this.gameView.init();
 
     this.stage.addChild(this.gameView);
 
     this.resizeView();
+  }
+
+  public getViewHeight(viewWidth) {
+    if (this.renderer.width > this.renderer.height) {
+      return 900;
+    } else {
+      return Math.floor(viewWidth * this.renderer.height / this.renderer.width);
+    }
   }
 
   public resizeView(): void {

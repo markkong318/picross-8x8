@@ -7,10 +7,10 @@ export class GameModel extends Model {
   public hintRows: number[][];
   public hintColumns: number[][];
 
-  public isStart: boolean = false;
-  public isTouched: boolean = false;
-
   public timer: number = 0;
+
+  public puzzleWidth: number;
+  public puzzleHeight: number;
 
   constructor() {
     super();

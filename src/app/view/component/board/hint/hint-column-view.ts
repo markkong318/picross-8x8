@@ -3,16 +3,17 @@ import * as PIXI from 'pixi.js';
 import {View} from '../../../../../framework/view';
 import {Size} from '../../../../../framework/size';
 import {HintView} from './hint-view';
+import {BLOCK_WIDTH} from '../../../../env/block';
 
 export class HintColumnView extends View {
   private graphics: PIXI.Graphics;
   private hintViews: HintView[];
 
-  public size = new Size(32, 150);
+  public size = new Size(BLOCK_WIDTH, 150);
   private radius: number = 10;
 
   private puzzleOffset: number = 10;
-  
+
   constructor() {
     super();
   }

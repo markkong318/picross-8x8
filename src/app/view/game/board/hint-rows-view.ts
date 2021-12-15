@@ -7,7 +7,7 @@ import {
   EVENT_UPDATE_HINT_VIEW,
 } from '../../../env/event';
 import Bottle from '../../../../framework/bottle';
-import {PUZZLE_HEIGHT} from '../../../env/puzzle';
+import {BLOCK_HEIGHT} from '../../../env/block';
 import {HintRowView} from '../../component/board/hint/hint-row-view';
 
 export class HintRowsView extends View {
@@ -23,9 +23,9 @@ export class HintRowsView extends View {
 
     this.hintRowViews = [];
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < this.gameModel.puzzleHeight; i++) {
       const hintRowView = new HintRowView();
-      hintRowView.position = new PIXI.Point(0, i * PUZZLE_HEIGHT);
+      hintRowView.position = new PIXI.Point(0, i * BLOCK_HEIGHT);
       hintRowView.init();
 
       if (i % 2) {

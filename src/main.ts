@@ -29,7 +29,6 @@ font.load()
       resizeTo: window,
       antialias: true,
       resolution: 2,
-      // autoDensity: true,
       autoResize: true
     });
     document.body.appendChild(app.view);
