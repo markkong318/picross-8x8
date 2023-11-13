@@ -2,6 +2,8 @@
 
 Game which is forked from `parcel-pixijs-quickstarter` and apply MVC
 
+![img.png](img.png)
+
 ### Quick start
 **Node version >= 8.0 (recommended 10.6.0) and NPM >= 5 (recommended 6.1.0)**
 
